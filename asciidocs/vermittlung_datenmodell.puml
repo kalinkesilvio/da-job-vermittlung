@@ -1,0 +1,92 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+'class User {
+'    * userId: Long
+'    roleName: Enum
+'    + roleId: Long
+'    email: String
+'    password: String
+'}
+/'class ContactPerson {
+    * id: Long
+    title: Enum
+    firstName: String
+    lastName: String
+}'/
+class JobOffer {
+    * jobOfferId: Long
+    salary: Double
+    title: String
+    descr: String
+    category: String
+    condition: String
+'    + offerDetailsId: OfferDetails
+}
+'class OfferDetails {
+'    * offerDetailsId: Long
+'    salary: Double
+'    + addressId: Address
+'}
+class Company {
+    * companyId: Long
+    companyName: String
+    websiteUrl: String
+    branche: String
+    email: String
+    telNo: String
+    + jobOfferId: JobOffer
+    '+ contactPersonId: ContactPerson
+    + addressId: Address
+}
+class Address {
+    * addressId: Long
+    street: String
+    streetNo: String
+    zipNo: Int
+    city: String
+    country: String
+    state: String
+}
+class Applicant {
+    * applicantId: Long
+    resume: File
+    descr: String
+    skillDescr: String
+    interestDescr: String
+    jobField: String
+    jobBranche: String
+    preferableWork: String
+    retirement: Date
+    hoursPerWeek: Int
+    commute: boolean
+    + addressId: Address
+}
+class Action {
+    * actionId: Long
+    actionName: String
+    actionDate: LocalDateTime
+    + companyId: Company
+    + applicantId: Applicant
+}
+
+note "If an applicant shows interest\n towards a company (e.g. bookmarks a specific one),\n an action will be created" as N1
+'class Admin {
+'    * adminId: Long
+'}
+
+'User "*" -- "1" Company
+'User "*" -- "1" Senior
+'User "1" -- "1" Admin
+'JobOffer "1" -- "1" OfferDetails
+Company "1" -- "*" JobOffer
+'Company "1" -- "1" ContactPerson
+Applicant "*" -- "1" Address
+Company "*" -- "1" Address
+Company "1" -up- "0..*" Action
+Applicant "1" -up- "0..*" Action
+'OfferDetails "1" -left-- "1" Address
+Action .right. N1
+
+
+@enduml

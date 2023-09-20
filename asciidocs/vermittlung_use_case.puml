@@ -1,0 +1,31 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+skinparam actorStyle awesome
+left to right direction
+
+:Admin: as Admin
+:Applicant: as a
+:Company: as c
+
+package mediation_agency {
+    usecase "password log-ln" as USC1
+    usecase "upload CV" as USC2
+    usecase "gradually update personal information" as USC3
+    usecase "compare/look at job advertisement" as USC4
+    usecase "create job advertisement" as USC5
+    usecase "process matching interests" as USC6
+}
+
+a --> USC1
+a --> USC2
+a --> USC3
+a --> USC4
+
+c --> USC1
+c --> USC5
+
+Admin --> USC6
+Admin ---> USC1
+
+@enduml
