@@ -37,7 +37,7 @@ class Company {
     telNo: String
     + jobOfferId: JobOffer
     '+ contactPersonId: ContactPerson
-    + addressId: Address
+    '+ addressId: Address
 }
 class Address {
     * addressId: Long
@@ -70,23 +70,42 @@ class Action {
     + applicantId: Applicant
 }
 
-note "If an applicant shows interest\n towards a company (e.g. bookmarks a specific one),\n an action will be created" as N1
+'note "If an applicant shows interest\n towards a company (e.g. bookmarks a specific one),\n an action will be created" as N1
 'class Admin {
 '    * adminId: Long
 '}
 
+note "1. \nEin Unternehmen kann mehrere\n Job-Angebote erstellen (1,1 : 0,n)\n Ein Job-Angebot ist eine Komposition\n und kann ohne ein Unternehmen nicht existieren." as N1
+note "2. \nEin Bewerber hat genau 1 Adresse (1,n : 1,1)\n Jede Adresse kann mehrere Bewerber haben. (z.B. Ehepaar im gleichen Haus)" as N2
+note "3. \nEin Unternehmen kann eine Aktion auslösen (1,1 : 0,n)\n Dabei kann eine Aktion nicht ohne Unternehmen und Bewerber existieren\n (z.B. Unternehmen hat Interesse für eine Zusammenarbeit mit UserA)" as N3
+note "4. \nEin Bewerber löst eine Aktion aus, muss aber nicht (1,1 : 0,n)\n (z.B. Bewerber markiert eine Firma die ihm interessiert)\n Eine Aktion kann ohne Unternehmen und Bewerber nicht existieren" as N4
+note "5. \nBei Interesse an ein Job-Angebot vom Bewerber " as N6
 'User "*" -- "1" Company
 'User "*" -- "1" Senior
 'User "1" -- "1" Admin
 'JobOffer "1" -- "1" OfferDetails
-Company "1" -- "*" JobOffer
+Company "1" -- "0..*" JobOffer
+note left on link : siehe Notiz 1.
 'Company "1" -- "1" ContactPerson
 Applicant "*" -- "1" Address
-Company "*" -- "1" Address
+note right on link : siehe Notiz 2.
+Company "1" -- "*" Address
+'note left on link : "Ein Unternehmen kann mehrere Adressen (=Standorte) haben (1,1 : n)"
 Company "1" -up- "0..*" Action
+note left on link : siehe Notiz 3.
 Applicant "1" -up- "0..*" Action
+note right on link : siehe Notiz 4.
+Applicant "0..*" -- "0..*" JobOffer
+(Applicant, JobOffer) .. Application
+note right on link: siehe Notiz 5.
+
+class Application {
+    + applicantId: Applicant
+    + jobOfferId: JobOffer
+}
+
 'OfferDetails "1" -left-- "1" Address
-Action .right. N1
+'Action .right. N1
 
 
 @enduml
