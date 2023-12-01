@@ -18,4 +18,13 @@ public class ApplicantRepository implements PanacheRepository<Applicant> {
         em.merge(applicant);
     }
 
+    public Applicant getApplicantById(Long id) {
+        return findById(id);
+    }
+
+    @Transactional
+    public void remove(Applicant applicant) {
+        delete(applicant);
+    }
+
 }
