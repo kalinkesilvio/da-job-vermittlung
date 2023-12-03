@@ -35,6 +35,17 @@ public class CompanyResource {
         )).build();
     }
 
+    @PUT
+    @Transactional
+    @Path("addAddressById/{companyId}/{addressId}")
+    public Response addAddress(
+            @PathParam("companyId") Long companyId,
+            @PathParam("addressId") Long addressId) {
+        return Response.ok(
+                this.companyRepository.addAddressById(companyId, addressId)
+        ).build();
+    }
+
     @GET
     @Path("/{id}")
     public Response getById(@PathParam("id") Long id) {
