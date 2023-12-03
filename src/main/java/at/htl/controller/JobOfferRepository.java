@@ -19,5 +19,10 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
         em.persist(jobOffer);
     }
 
+    @Transactional
+    public JobOffer saveWithReturn(JobOffer jobOffer) {
+        return em.merge(jobOffer);
+    }
+
 
 }
