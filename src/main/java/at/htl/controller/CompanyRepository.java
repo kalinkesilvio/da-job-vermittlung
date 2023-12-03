@@ -24,7 +24,7 @@ public class CompanyRepository implements PanacheRepository<Company> {
     }
 
     @Transactional
-    public void remove(Long id) {
-        deleteById(id);
+    public boolean remove(Long id) {
+        return deleteById(id);
     }
 }

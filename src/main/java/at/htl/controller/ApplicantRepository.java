@@ -23,8 +23,8 @@ public class ApplicantRepository implements PanacheRepository<Applicant> {
     }
 
     @Transactional
-    public void remove(Long id) {
-        deleteById(id);
+    public boolean remove(Long id) {
+        return deleteById(id);
     }
 
 }
