@@ -6,7 +6,9 @@ import at.htl.entity.Company;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 
 import java.net.URI;
 
@@ -24,10 +26,24 @@ public class CompanyResource {
         return Response.created(URI.create("company/" + company.id)).build();
     }
 
+    @PUT
+    @Transactional
+    @Path("update")
+    public Response update(Company company, @Context UriInfo uriInfo) {
+        return Response.created(URI.create(
+                uriInfo.getPath() + "/" + this.companyRepository.updateWithReturn(company).id
+        )).build();
+    }
+
     @GET
     @Path("/{id}")
     public Response getById(@PathParam("id") Long id) {
         return Response.ok(companyRepository.getCompanyById(id)).build();
+    }
+
+    @GET
+    public Response getAll() {
+        return Response.ok(companyRepository.listAll()).build();
     }
 
     @DELETE

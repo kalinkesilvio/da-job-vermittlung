@@ -19,6 +19,11 @@ public class CompanyRepository implements PanacheRepository<Company> {
         em.persist(company);
     }
 
+    @Transactional
+    public Company updateWithReturn(Company company) {
+        return em.merge(company);
+    }
+
     public Company getCompanyById(Long id) {
         return findById(id);
     }
