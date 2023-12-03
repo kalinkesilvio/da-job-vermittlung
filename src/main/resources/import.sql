@@ -166,3 +166,17 @@ insert into applicant values(
                                 null,
                                 'Autodidakt'
                          );
+
+insert into action values(
+                              '2023-12-03',
+                              14,
+                              2,
+                              1,
+                              'favorable'
+                         );
+
+insert into application values(
+                               14,
+                               1,
+                               12
+                              );
