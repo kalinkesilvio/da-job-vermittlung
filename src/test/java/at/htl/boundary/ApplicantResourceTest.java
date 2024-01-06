@@ -75,4 +75,16 @@ class ApplicantResourceTest {
                 .log().body()
                 .statusCode(200);
     }
+
+    @Test
+    void testGetApplicantsByBranche() {
+        given()
+                .pathParam("branche", "Gastronomie")
+                .when()
+                .get("/getAllByBranche/{branche}")
+                .peek()
+                .then()
+                .statusCode(200)
+                .body("size()", is(1));
+    }
 }

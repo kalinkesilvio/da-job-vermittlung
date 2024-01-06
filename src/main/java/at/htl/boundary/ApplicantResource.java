@@ -50,8 +50,9 @@ public class ApplicantResource {
     }
 
     @GET
-    @Path("getAllByBranche")
-    public Response getAllByBranche(String branche) {
+    @Path("getAllByBranche/{branche}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response getAllByBranche(@PathParam("branche") String branche) {
         return Response.ok(applicantRepository.getByBranche(branche)).build();
     }
 }
