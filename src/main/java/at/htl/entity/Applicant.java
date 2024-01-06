@@ -30,8 +30,8 @@ public class Applicant extends PanacheEntity{
     public String jobBranche;
     public String preferableWork;
 
-    @JsonbDateFormat("dd-MM-yyyy")
-    public LocalDateTime retirement;
+    //@JsonbDateFormat("dd-MM-yyyy")
+    //public LocalDateTime retirement;
 
     public int hoursPerWeek;
     public boolean commute;
@@ -49,7 +49,7 @@ public class Applicant extends PanacheEntity{
         this.password = password;
     }
 
-    public Applicant(String firstName, String lastName, String email, String password, String resumeUrl, String descr, String skillDescr, String interestDescr, String jobField, String jobBranche, String preferableWork, String retirement, int hoursPerWeek, boolean commute, String imageUrl, Address address) {
+    public Applicant(String firstName, String lastName, String email, String password, String resumeUrl, String descr, String skillDescr, String interestDescr, String jobField, String jobBranche, String preferableWork, int hoursPerWeek, boolean commute, String imageUrl, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -61,7 +61,7 @@ public class Applicant extends PanacheEntity{
         this.jobField = jobField;
         this.jobBranche = jobBranche;
         this.preferableWork = preferableWork;
-        this.retirement = LocalDateTime.parse(retirement, CUSTOM_DATE);
+        //this.retirement = LocalDateTime.parse(retirement, CUSTOM_DATE);
         this.hoursPerWeek = hoursPerWeek;
         this.commute = commute;
         this.imageUrl = imageUrl;
