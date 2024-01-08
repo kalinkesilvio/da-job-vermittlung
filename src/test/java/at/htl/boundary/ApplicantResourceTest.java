@@ -165,7 +165,7 @@ class ApplicantResourceTest {
     }
 
     @Test
-    void createApplicantMock() {
+    void createApplicantMockOK() {
 
         Applicant newApplicant = new Applicant(
                 "Richard",
@@ -198,6 +198,43 @@ class ApplicantResourceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
         Assertions.assertNotNull(response.getLocation());
+
+    }
+
+    @Test
+    void createApplicantMockNotOK() {
+
+        Applicant newApplicant = new Applicant(
+                "Richard",
+                "Schlaumeier",
+                "bob.schlaumeier@gmail.com",
+                "TESTPASSWORT123",
+                null,
+                "jahrelange Erfahrung in Firma Soo gesammelt",
+                "Tischlerei Meister",
+                "Firma mit guter technischer Ausstattung",
+                "Tischler",
+                "Holzverarbeitung",
+                "Führung in der Werkstatt",
+                38,
+                true,
+                null,
+                null
+        );
+
+        Mockito.doNothing().when(applicantRepository).persist(
+                ArgumentMatchers.any(Applicant.class)
+        );
+
+        Mockito.when(applicantRepository.isPersistent(
+                ArgumentMatchers.any(Applicant.class)
+        )).thenReturn(false);
+
+        Response response = applicantResource.create(newApplicant);
+
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        Assertions.assertNull(response.getLocation());
 
     }
 
