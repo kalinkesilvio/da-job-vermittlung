@@ -30,7 +30,16 @@ public class ApplicantResource {
     @GET
     @Path("/{id}")
     public Response getById(@PathParam("id") Long id) {
-        return Response.ok(applicantRepository.getApplicantById(id)).build();
+        return applicantRepository
+                .findByIdOptional(id)
+                .map(applicant -> Response.ok(applicant).build())
+                .orElse(Response.status(Response.Status.NOT_FOUND).build());
+    }
+
+    @GET
+    @Path("/getAll")
+    public Response getAll() {
+        return Response.ok(applicantRepository.listAll()).build();
     }
 
     @DELETE

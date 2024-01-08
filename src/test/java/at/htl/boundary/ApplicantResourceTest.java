@@ -2,6 +2,7 @@ package at.htl.boundary;
 
 import at.htl.controller.ApplicantRepository;
 import at.htl.entity.Applicant;
+import io.quarkus.test.InjectMock;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -10,17 +11,18 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.yasson.internal.JsonbDateFormatter;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.BDDAssumptions.given;
@@ -31,8 +33,22 @@ import static org.assertj.core.api.Assertions.*;
 @TestHTTPEndpoint(ApplicantResource.class)
 class ApplicantResourceTest {
 
-    @Inject
+    @InjectMock
     ApplicantRepository applicantRepository;
+
+    @Inject
+    ApplicantResource applicantResource;
+
+    private Applicant applicant;
+
+    @BeforeEach
+    void setUp() {
+        this.applicant = new Applicant();
+        applicant.jobBranche = "Medientechnik";
+        applicant.firstName = "John";
+        applicant.skillDescr = "handy with camera stuff";
+        applicant.id = 1L;
+    }
 
     @Test
     void testGetByIdEndpoint() {
@@ -56,6 +72,63 @@ class ApplicantResourceTest {
                     "jobField", is("Koch"));
 
     }
+
+    @Test
+    void testGetByIdEndpointMockingOK() {
+        Mockito.when(applicantRepository.findByIdOptional(1L))
+                .thenReturn(Optional.of(applicant));
+
+        Response response = applicantResource.getById(1L);
+
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        Assertions.assertNotNull(response.getEntity());
+
+        Applicant entity = (Applicant) response.getEntity();
+
+        Assertions.assertEquals(1L, entity.id);
+        Assertions.assertEquals("John", entity.firstName);
+        Assertions.assertEquals("Medientechnik", entity.jobBranche);
+    }
+
+    @Test
+    void testGetByIdEndpointMockingNotOK() {
+        Mockito.when(applicantRepository.findByIdOptional(1L))
+                .thenReturn(Optional.empty());
+
+        Response response = applicantResource.getById(1L);
+
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        Assertions.assertNull(response.getEntity());
+    }
+
+    @Test
+    void getAll() {
+        List<Applicant> applicants = new ArrayList<>();
+        applicants.add(applicant);
+
+        Mockito.when(applicantRepository.listAll()).thenReturn(applicants);
+        Response response = applicantResource.getAll();
+
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        Assertions.assertNotNull(response.getEntity());
+
+        List<Applicant> entity = (List<Applicant>) response.getEntity();
+
+        Assertions.assertFalse(entity.isEmpty());
+        Assertions.assertEquals(1L, entity.get(0).id);
+    }
+
+//    @Test
+//    public void testGetByIdEndpointMocking() {
+//        Applicant a = new Applicant();
+//
+//        Mockito.when(applicantRepository.getApplicantById(12L)).thenReturn(a);
+//        Assertions.assertSame(a, applicantRepository.findById(12L));
+//        Assertions.assertNull(applicantRepository.findById(23L));
+//    }
 
     @Test
     void testCreateApplicant() {
