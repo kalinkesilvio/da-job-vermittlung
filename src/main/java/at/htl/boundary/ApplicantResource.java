@@ -24,7 +24,10 @@ public class ApplicantResource {
     @Path("/create")
     public Response create(Applicant applicant) {
         applicantRepository.save(applicant);
-        return Response.created(URI.create("applicant/" + applicant.id)).build();
+        if (applicantRepository.isPersistent(applicant)) {
+            return Response.created(URI.create("/applicant/" + applicant.id)).build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     @GET
