@@ -44,9 +44,9 @@ class ApplicantResourceTest {
 
         this.applicant2 = new Applicant();
         applicant2.jobBranche = "Informatik";
-        applicant.firstName = "Max";
-        applicant.skillDescr = "skilled with SQL Queries";
-        applicant.id = 2L;
+        applicant2.firstName = "Max";
+        applicant2.skillDescr = "skilled with SQL Queries";
+        applicant2.id = 2L;
     }
 
     @Test
