@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 @TestHTTPEndpoint(ApplicantResource.class)
@@ -79,15 +80,15 @@ class ApplicantResourceTest {
 
         Response response = applicantResource.getById(1L);
 
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        Assertions.assertNotNull(response.getEntity());
+        assertNotNull(response);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertNotNull(response.getEntity());
 
         Applicant entity = (Applicant) response.getEntity();
 
-        Assertions.assertEquals(1L, entity.id);
-        Assertions.assertEquals("John", entity.firstName);
-        Assertions.assertEquals("Medientechnik", entity.jobBranche);
+        assertEquals(1L, entity.id);
+        assertEquals("John", entity.firstName);
+        assertEquals("Medientechnik", entity.jobBranche);
     }
 
     @Test
@@ -97,9 +98,9 @@ class ApplicantResourceTest {
 
         Response response = applicantResource.getById(1L);
 
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-        Assertions.assertNull(response.getEntity());
+        assertNotNull(response);
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertNull(response.getEntity());
     }
 
     @Test
@@ -110,14 +111,14 @@ class ApplicantResourceTest {
         Mockito.when(applicantRepository.listAll()).thenReturn(applicants);
         Response response = applicantResource.getAll();
 
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        Assertions.assertNotNull(response.getEntity());
+        assertNotNull(response);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertNotNull(response.getEntity());
 
         List<Applicant> entity = (List<Applicant>) response.getEntity();
 
-        Assertions.assertFalse(entity.isEmpty());
-        Assertions.assertEquals(1L, entity.get(0).id);
+        assertFalse(entity.isEmpty());
+        assertEquals(1L, entity.get(0).id);
     }
 
 //    @Test
@@ -195,9 +196,9 @@ class ApplicantResourceTest {
 
         Response response = applicantResource.create(newApplicant);
 
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
-        Assertions.assertNotNull(response.getLocation());
+        assertNotNull(response);
+        assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
+        assertNotNull(response.getLocation());
 
     }
 
@@ -232,9 +233,9 @@ class ApplicantResourceTest {
 
         Response response = applicantResource.create(newApplicant);
 
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-        Assertions.assertNull(response.getLocation());
+        assertNotNull(response);
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        assertNull(response.getLocation());
 
     }
 

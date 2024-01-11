@@ -23,7 +23,10 @@ public class CompanyResource {
     @Path("/create")
     public Response create(Company company) {
         companyRepository.save(company);
-        return Response.created(URI.create("company/" + company.id)).build();
+        if (companyRepository.isPersistent(company)) {
+            return Response.created(URI.create("company/" + company.id)).build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     @PUT
