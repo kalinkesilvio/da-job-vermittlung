@@ -293,30 +293,12 @@ class ApplicantResourceTest {
         assertNull(response.getEntity());
     }
 
-//    @Test
-//    void testGetApplicantsByBrancheMocking() {
-//
-//        List<Applicant> applicants = new ArrayList<>();
-//        applicants.add(applicant);
-//        applicants.add(applicant2);
-//
-////        PanacheQuery<Applicant> query = Mockito.mock(PanacheQuery.class);
-////        Mockito.when(query.page(Mockito.any())).thenReturn(query);
-////        Mockito.when(query.c)
-////                .thenReturn(applicants);
-//
-//        Mockito.when(applicantRepository.findAll().stream().filter(a -> a.jobBranche.equalsIgnoreCase("Medientechnik"))
-//                .collect(Collectors.toList())).thenReturn(applicants);
-//
-//        Response response = applicantResource.getAllByBranche("Medientechnik");
-//
-//        Assertions.assertNotNull(response);
-//        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-//        Assertions.assertNotNull(response.getEntity());
-//
-//        List<Applicant> entity = (List<Applicant>) response.getEntity();
-//
-//        Assertions.assertFalse(entity.isEmpty());
-//        Assertions.assertEquals(1L, entity.get(0).id);
-//    }
+    @Test
+    void deleteByIdOK(){
+        Mockito.when(applicantRepository.deleteById(1L)).thenReturn(true);
+        Response response = applicantResource.delete(1L);
+        assertNotNull(response);
+        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+        assertNull(response.getEntity());
+    }
 }
