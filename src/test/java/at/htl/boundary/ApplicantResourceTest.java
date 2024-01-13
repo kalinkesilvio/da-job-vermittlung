@@ -259,6 +259,40 @@ class ApplicantResourceTest {
                 .body("size()", is(1));
     }
 
+    @Test
+    void testUpdateByIdEndpointMockingOK() {
+
+        Applicant updatedApplicant = new Applicant();
+        updatedApplicant.jobBranche = "Grafikdesign";
+
+        Mockito.when(applicantRepository.findByIdOptional(1L))
+                .thenReturn(Optional.of(applicant));
+
+        Response response = applicantResource.updateById(1L, updatedApplicant);
+
+        assertNotNull(response);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertNotNull(response.getEntity());
+
+        Applicant entity = (Applicant) response.getEntity();
+
+        assertEquals(1L, entity.id);
+         assertEquals("Grafikdesign", entity.jobBranche);
+    }
+
+    @Test
+    void testUpdateByIdEndpointMockingKO() {
+
+        Mockito.when(applicantRepository.findByIdOptional(1L))
+                .thenReturn(Optional.empty());
+
+        Response response = applicantResource.updateById(1L, new Applicant());
+
+        assertNotNull(response);
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertNull(response.getEntity());
+    }
+
 //    @Test
 //    void testGetApplicantsByBrancheMocking() {
 //
