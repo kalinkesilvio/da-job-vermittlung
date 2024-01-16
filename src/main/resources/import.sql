@@ -147,7 +147,8 @@ insert into applicant values(
                                 'Meister in der Küche (hinterfragen Sies erst garnicht)'
                          );
 
-insert into applicant values(
+insert into applicant --(id, firstname, lastname, jobbranche)
+                        values(
                                 true,
                                 15,
                                 101,

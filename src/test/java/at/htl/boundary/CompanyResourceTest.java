@@ -7,6 +7,7 @@ import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.persistence.Entity;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
@@ -26,7 +28,7 @@ class CompanyResourceTest {
     @Inject
     CompanyResource companyResource;
 
-    @InjectMock
+    @Inject
     CompanyRepository companyRepository;
 
     private Company company1;
@@ -36,6 +38,22 @@ class CompanyResourceTest {
         this.company1 = new Company();
         company1.companyName = "CP GmbH";
         company1.branche = "Heiztechnik";
+        company1.id = 1L;
+    }
+
+    @Test
+    void createCompany() {
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(this.company1)
+                .when()
+                .post("/create")
+                .peek()
+                .then()
+                .statusCode(Response.Status.CREATED.getStatusCode())
+                .header("location", "http://localhost:9090/api/company/1");
+
     }
 
 
@@ -91,7 +109,6 @@ class CompanyResourceTest {
 
         List<Company> entity = (List<Company>) response.getEntity();
 
-        assertNotNull(entity.isEmpty());
         assertEquals(1L, entity.get(0).id);
     }
 

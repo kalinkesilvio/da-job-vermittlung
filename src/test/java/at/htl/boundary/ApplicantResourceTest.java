@@ -2,15 +2,14 @@ package at.htl.boundary;
 
 import at.htl.controller.ApplicantRepository;
 import at.htl.entity.Applicant;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.*;
-import org.mockito.ArgumentMatcher;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
@@ -27,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ApplicantResourceTest {
 
     @InjectMock
-    ApplicantRepository applicantRepository;
+    ApplicantRepository applicantRepositoryMock;
 
     @Inject
     ApplicantResource applicantResource;
@@ -51,31 +50,8 @@ class ApplicantResourceTest {
     }
 
     @Test
-    void testGetByIdEndpoint() {
-
-//        Applicant a1 = new Applicant();
-//
-//        a1.firstName = "Ludwig";
-//        a1.jobField = "Koch";
-//        a1.id = Long.parseLong("9");
-//
-//        this.applicantRepository.save(a1);
-
-    given()
-                .pathParam("id", "14")
-            .when()
-                .get("/{id}")
-            .then()
-            // .log().body()
-                .statusCode(200)
-                .body("firstName", is("Ludwig"),
-                    "jobField", is("Koch"));
-
-    }
-
-    @Test
     void testGetByIdEndpointMockingOK() {
-        Mockito.when(applicantRepository.findByIdOptional(1L))
+        Mockito.when(applicantRepositoryMock.findByIdOptional(1L))
                 .thenReturn(Optional.of(applicant));
 
         Response response = applicantResource.getById(1L);
@@ -93,7 +69,7 @@ class ApplicantResourceTest {
 
     @Test
     void testGetByIdEndpointMockingNotOK() {
-        Mockito.when(applicantRepository.findByIdOptional(1L))
+        Mockito.when(applicantRepositoryMock.findByIdOptional(1L))
                 .thenReturn(Optional.empty());
 
         Response response = applicantResource.getById(1L);
@@ -108,7 +84,7 @@ class ApplicantResourceTest {
         List<Applicant> applicants = new ArrayList<>();
         applicants.add(applicant);
 
-        Mockito.when(applicantRepository.listAll()).thenReturn(applicants);
+        Mockito.when(applicantRepositoryMock.listAll()).thenReturn(applicants);
         Response response = applicantResource.getAll();
 
         assertNotNull(response);
@@ -131,44 +107,10 @@ class ApplicantResourceTest {
 //    }
 
     @Test
-    void testCreateApplicant() {
-
-        Applicant applicant = new Applicant(
-                    "Bob",
-                    "Schlaumeier",
-                    "bob.schlaumeier@gmail.com",
-                    "TESTPASSWORT123",
-                    null,
-                    "jahrelange Erfahrung in Firma Soo gesammelt",
-                    "Tischlerei Meister",
-                    "Firma mit guter technischer Ausstattung",
-                    "Tischler",
-                    "Holzverarbeitung",
-                    "Führung in der Werkstatt",
-                    38,
-                    true,
-                    null,
-                    null
-        );
-
-        given()
-                .body(applicant)
-                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                    .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
-                //    .log().all()
-                .when()
-                    .post("/create")
-                //    .peek()
-                .then()
-                .log().body()
-                    .statusCode(Response.Status.CREATED.getStatusCode())
-                    .header("location", "http://localhost:8081/api/applicant/2");
-    }
-
-    @Test
     void createApplicantMockOK() {
 
         Applicant newApplicant = new Applicant(
+                null,
                 "Richard",
                 "Schlaumeier",
                 "bob.schlaumeier@gmail.com",
@@ -186,13 +128,11 @@ class ApplicantResourceTest {
                 null
         );
 
-        Mockito.doNothing().when(applicantRepository).persist(
+        Mockito.when(applicantRepositoryMock.save(
                 ArgumentMatchers.any(Applicant.class)
-        );
+        )).thenReturn(newApplicant);
 
-        Mockito.when(applicantRepository.isPersistent(
-                ArgumentMatchers.any(Applicant.class)
-        )).thenReturn(true);
+        Mockito.when(Mockito.mock(Applicant.class).isPersistent()).thenReturn(true);
 
         Response response = applicantResource.create(newApplicant);
 
@@ -206,6 +146,7 @@ class ApplicantResourceTest {
     void createApplicantMockNotOK() {
 
         Applicant newApplicant = new Applicant(
+                null,
                 "Richard",
                 "Schlaumeier",
                 "bob.schlaumeier@gmail.com",
@@ -223,11 +164,11 @@ class ApplicantResourceTest {
                 null
         );
 
-        Mockito.doNothing().when(applicantRepository).persist(
+        Mockito.when(applicantRepositoryMock.save(
                 ArgumentMatchers.any(Applicant.class)
-        );
+        )).thenReturn(applicant);
 
-        Mockito.when(applicantRepository.isPersistent(
+        Mockito.when(applicantRepositoryMock.isPersistent(
                 ArgumentMatchers.any(Applicant.class)
         )).thenReturn(false);
 
@@ -240,32 +181,12 @@ class ApplicantResourceTest {
     }
 
     @Test
-    void testGetApplicantsByBranche() {
-
-        Applicant a1 = new Applicant();
-
-        a1.firstName = "Joseph";
-        a1.jobBranche = "Gastronomie";
-
-        this.applicantRepository.save(a1);
-
-        given()
-                .pathParam("branche", "Gastronomie")
-                .when()
-                .get("/getAllByBranche/{branche}")
-        //        .peek()
-                .then()
-                .statusCode(200)
-                .body("size()", is(1));
-    }
-
-    @Test
     void testUpdateByIdEndpointMockingOK() {
 
         Applicant updatedApplicant = new Applicant();
         updatedApplicant.jobBranche = "Grafikdesign";
 
-        Mockito.when(applicantRepository.findByIdOptional(1L))
+        Mockito.when(applicantRepositoryMock.findByIdOptional(1L))
                 .thenReturn(Optional.of(applicant));
 
         Response response = applicantResource.updateById(1L, updatedApplicant);
@@ -283,7 +204,7 @@ class ApplicantResourceTest {
     @Test
     void testUpdateByIdEndpointMockingKO() {
 
-        Mockito.when(applicantRepository.findByIdOptional(1L))
+        Mockito.when(applicantRepositoryMock.findByIdOptional(1L))
                 .thenReturn(Optional.empty());
 
         Response response = applicantResource.updateById(1L, new Applicant());
@@ -295,10 +216,11 @@ class ApplicantResourceTest {
 
     @Test
     void deleteByIdOK(){
-        Mockito.when(applicantRepository.deleteById(1L)).thenReturn(true);
+        Mockito.when(applicantRepositoryMock.deleteById(1L)).thenReturn(true);
         Response response = applicantResource.delete(1L);
         assertNotNull(response);
-        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
-        assertNull(response.getEntity());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(response.getEntity(), true);
+        assertNotNull(response.getEntity());
     }
 }

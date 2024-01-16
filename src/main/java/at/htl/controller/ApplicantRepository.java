@@ -18,8 +18,8 @@ public class ApplicantRepository implements PanacheRepository<Applicant> {
     EntityManager em;
 
     @Transactional
-    public void save(Applicant applicant) {
-        em.persist(applicant);
+    public Applicant save(Applicant applicant) {
+        return em.merge(applicant);
     }
 
     @Transactional

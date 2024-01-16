@@ -19,8 +19,8 @@ public class CompanyRepository implements PanacheRepository<Company> {
     AddressRepository addressRepository;
 
     @Transactional
-    public void save(Company company) {
-        em.persist(company);
+    public Company save(Company company) {
+        return em.merge(company);
     }
 
     @Transactional

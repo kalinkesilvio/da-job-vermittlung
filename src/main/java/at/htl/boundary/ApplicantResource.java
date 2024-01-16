@@ -10,6 +10,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
+import java.util.Optional;
 
 @Path("/applicant")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -23,9 +24,9 @@ public class ApplicantResource {
     @Transactional
     @Path("/create")
     public Response create(Applicant applicant) {
-        applicantRepository.save(applicant);
-        if (applicantRepository.isPersistent(applicant)) {
-            return Response.created(URI.create("/applicant/" + applicant.id)).build();
+        Applicant savedApplicant = applicantRepository.save(applicant);
+        if (savedApplicant.isPersistent()) {
+            return Response.created(URI.create("applicant/" + savedApplicant.id)).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
