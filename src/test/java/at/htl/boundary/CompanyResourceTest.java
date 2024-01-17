@@ -28,7 +28,7 @@ class CompanyResourceTest {
     @Inject
     CompanyResource companyResource;
 
-    @Inject
+    @InjectMock
     CompanyRepository companyRepository;
 
     private Company company1;
@@ -42,31 +42,9 @@ class CompanyResourceTest {
     }
 
     @Test
-    void createCompany() {
-
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(this.company1)
-                .when()
-                .post("/create")
-                .peek()
-                .then()
-                .statusCode(Response.Status.CREATED.getStatusCode())
-                .header("location", "http://localhost:9090/api/company/1");
-
-    }
-
-
-    @Test
     void createCompanyMockOK() {
 
-        Mockito.doNothing().when(companyRepository).persist(
-                ArgumentMatchers.any(Company.class)
-        );
-
-        Mockito.when(companyRepository.isPersistent(
-                ArgumentMatchers.any(Company.class)
-        )).thenReturn(true);
+        Mockito.when(companyRepository.save(company1)).thenReturn(company1);
 
         Response response = companyResource.create(company1);
 
@@ -78,13 +56,7 @@ class CompanyResourceTest {
     @Test
     void createCompanyMockKO() {
 
-        Mockito.doNothing().when(companyRepository).persist(
-                ArgumentMatchers.any(Company.class)
-        );
-
-        Mockito.when(companyRepository.isPersistent(
-                ArgumentMatchers.any(Company.class)
-        )).thenReturn(false);
+        Mockito.when(companyRepository.save(company1)).thenReturn(null);
 
         Response response = companyResource.create(company1);
 

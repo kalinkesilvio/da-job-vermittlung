@@ -2,14 +2,18 @@ package at.htl.boundary;
 
 import at.htl.controller.ApplicantRepository;
 import at.htl.entity.Applicant;
+import at.htl.entity.Company;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.test.InjectMock;
+import io.quarkus.test.Mock;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.*;
+import org.mockito.ArgumentMatcher;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
@@ -109,32 +113,11 @@ class ApplicantResourceTest {
     @Test
     void createApplicantMockOK() {
 
-        Applicant newApplicant = new Applicant(
-                null,
-                "Richard",
-                "Schlaumeier",
-                "bob.schlaumeier@gmail.com",
-                "TESTPASSWORT123",
-                null,
-                "jahrelange Erfahrung in Firma Soo gesammelt",
-                "Tischlerei Meister",
-                "Firma mit guter technischer Ausstattung",
-                "Tischler",
-                "Holzverarbeitung",
-                "Führung in der Werkstatt",
-                38,
-                true,
-                null,
-                null
-        );
-
         Mockito.when(applicantRepositoryMock.save(
-                ArgumentMatchers.any(Applicant.class)
-        )).thenReturn(newApplicant);
+                applicant2
+        )).thenReturn(applicant2);
 
-        Mockito.when(Mockito.mock(Applicant.class).isPersistent()).thenReturn(true);
-
-        Response response = applicantResource.create(newApplicant);
+        Response response = applicantResource.create(applicant2);
 
         assertNotNull(response);
         assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
@@ -166,11 +149,7 @@ class ApplicantResourceTest {
 
         Mockito.when(applicantRepositoryMock.save(
                 ArgumentMatchers.any(Applicant.class)
-        )).thenReturn(applicant);
-
-        Mockito.when(applicantRepositoryMock.isPersistent(
-                ArgumentMatchers.any(Applicant.class)
-        )).thenReturn(false);
+        )).thenReturn(null);
 
         Response response = applicantResource.create(newApplicant);
 

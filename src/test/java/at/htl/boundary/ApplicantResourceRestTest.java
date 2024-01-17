@@ -58,14 +58,6 @@ class ApplicantResourceRestTest {
 
     @Test
     void getById() {
-        //        Applicant a1 = new Applicant();
-//
-//        a1.firstName = "Ludwig";
-//        a1.jobField = "Koch";
-//        a1.id = Long.parseLong("9");
-//
-//        this.applicantRepository.save(a1);
-
         given()
                 .pathParam("id", "14")
                 .when()

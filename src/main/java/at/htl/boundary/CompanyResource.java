@@ -22,7 +22,11 @@ public class CompanyResource {
     @Transactional
     @Path("/create")
     public Response create(Company company) {
-        return Response.created(URI.create("company/" + companyRepository.save(company).id)).build();
+        Company savedCompany = companyRepository.save(company);
+        if (savedCompany != null) {
+            return Response.created(URI.create("company/" + savedCompany.id)).build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     @PUT
