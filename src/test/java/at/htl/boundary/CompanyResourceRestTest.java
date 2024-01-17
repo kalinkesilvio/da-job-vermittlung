@@ -8,9 +8,11 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 @TestHTTPEndpoint(CompanyResource.class)
@@ -38,6 +40,19 @@ class CompanyResourceRestTest {
                 .then()
                 .statusCode(Response.Status.CREATED.getStatusCode())
                 .header("location", "http://localhost:9090/api/company/1");
+    }
+
+    @Test
+    void getById() {
+        given()
+                .pathParam("id", "3")
+                .when()
+                .get("/{id}")
+                .then()
+                .statusCode(200)
+                .log().body()
+                .body("companyName", is("Crop 7 GmbH"),
+                        "branche", is("Grafik & Design"));
     }
 
 }
