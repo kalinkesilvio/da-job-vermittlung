@@ -101,15 +101,6 @@ class ApplicantResourceTest {
         assertEquals(1L, entity.get(0).id);
     }
 
-//    @Test
-//    public void testGetByIdEndpointMocking() {
-//        Applicant a = new Applicant();
-//
-//        Mockito.when(applicantRepository.getApplicantById(12L)).thenReturn(a);
-//        Assertions.assertSame(a, applicantRepository.findById(12L));
-//        Assertions.assertNull(applicantRepository.findById(23L));
-//    }
-
     @Test
     void createApplicantMockOK() {
 

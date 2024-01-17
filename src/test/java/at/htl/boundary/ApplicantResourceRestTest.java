@@ -1,27 +1,21 @@
 package at.htl.boundary;
 
-import at.htl.controller.ApplicantRepository;
 import at.htl.entity.Applicant;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 @TestHTTPEndpoint(ApplicantResource.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ApplicantResourceRestTest {
 
-    @Inject
-    ApplicantRepository applicantRepository;
-
-    private Applicant applicant;
+     private Applicant applicant;
     private Applicant applicant2;
 
     @BeforeEach
@@ -40,6 +34,7 @@ class ApplicantResourceRestTest {
     }
 
     @Test
+    @Order(4)
     void create() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -57,6 +52,7 @@ class ApplicantResourceRestTest {
     }
 
     @Test
+    @Order(1)
     void getById() {
         given()
                 .pathParam("id", "14")
@@ -70,7 +66,15 @@ class ApplicantResourceRestTest {
     }
 
     @Test
+    @Order(2)
     void getAll() {
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .get("/getAll")
+                .then()
+                .statusCode(200)
+                .body("size()", is(2));
     }
 
     @Test
@@ -78,14 +82,8 @@ class ApplicantResourceRestTest {
     }
 
     @Test
+    @Order(3)
     void getAllByBranche() {
-        Applicant a1 = new Applicant();
-
-        a1.firstName = "Joseph";
-        a1.jobBranche = "Gastronomie";
-
-        this.applicantRepository.save(a1);
-
         given()
                 .pathParam("branche", "Gastronomie")
                 .when()
@@ -94,6 +92,6 @@ class ApplicantResourceRestTest {
                 .then()
                 .statusCode(200)
                 .log().body()
-                .body("size()", is(2));
+                .body("size()", is(1));
     }
 }
