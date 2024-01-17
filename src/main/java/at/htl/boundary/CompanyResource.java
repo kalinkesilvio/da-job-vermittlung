@@ -56,6 +56,7 @@ public class CompanyResource {
     }
 
     @GET
+    @Path("/getAll")
     public Response getAll() {
         return Response.ok(companyRepository.listAll()).build();
     }

@@ -7,14 +7,13 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.class)
 @TestHTTPEndpoint(CompanyResource.class)
 class CompanyResourceRestTest {
 
@@ -31,6 +30,7 @@ class CompanyResourceRestTest {
         company1.id = 1L;
     }
     @Test
+    @Order(99)
     void create() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -43,6 +43,7 @@ class CompanyResourceRestTest {
     }
 
     @Test
+    @Order(1)
     void getById() {
         given()
                 .pathParam("id", "3")
@@ -53,6 +54,18 @@ class CompanyResourceRestTest {
                 .log().body()
                 .body("companyName", is("Crop 7 GmbH"),
                         "branche", is("Grafik & Design"));
+    }
+
+    @Test
+    @Order(2)
+    void getAll() {
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .get("/getAll")
+                .then()
+                .statusCode(200)
+                .body("size()", is(3));
     }
 
 }
