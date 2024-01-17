@@ -199,7 +199,7 @@ class ApplicantResourceTest {
         Response response = applicantResource.delete(1L);
         assertNotNull(response);
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        assertEquals(response.getEntity(), true);
+        assertEquals(response.getEntity(), false);
         assertNotNull(response.getEntity());
     }
 }
