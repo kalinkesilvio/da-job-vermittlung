@@ -2,6 +2,7 @@ package at.htl.boundary;
 
 import at.htl.controller.CompanyRepository;
 import at.htl.entity.Company;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
@@ -13,7 +14,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-@TestMethodOrder(MethodOrderer.class)
+@TestTransaction
+//@TestMethodOrder(MethodOrderer.class)
 @TestHTTPEndpoint(CompanyResource.class)
 class CompanyResourceRestTest {
 
@@ -30,7 +32,7 @@ class CompanyResourceRestTest {
         company1.id = 1L;
     }
     @Test
-    @Order(99)
+//    @Order(99)
     void create() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -43,7 +45,7 @@ class CompanyResourceRestTest {
     }
 
     @Test
-    @Order(1)
+//    @Order(1)
     void getById() {
         given()
                 .pathParam("id", "3")
@@ -57,7 +59,7 @@ class CompanyResourceRestTest {
     }
 
     @Test
-    @Order(2)
+//    @Order(2)
     void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)

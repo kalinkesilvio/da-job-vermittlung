@@ -1,6 +1,7 @@
 package at.htl.boundary;
 
 import at.htl.entity.Applicant;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.ws.rs.core.MediaType;
@@ -11,8 +12,9 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
+@TestTransaction
 @TestHTTPEndpoint(ApplicantResource.class)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ApplicantResourceRestTest {
 
      private Applicant applicant;
@@ -34,7 +36,7 @@ class ApplicantResourceRestTest {
     }
 
     @Test
-    @Order(4)
+//    @Order(4)
     void create() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -47,12 +49,12 @@ class ApplicantResourceRestTest {
                 .header("location", "http://localhost:9090/api/applicant/1");
     }
 
-    @Test
-    void updateById() {
-    }
+//    @Test
+//    void updateById() {
+//    }
 
     @Test
-    @Order(1)
+//    @Order(1)
     void getById() {
         given()
                 .pathParam("id", "14")
@@ -66,7 +68,7 @@ class ApplicantResourceRestTest {
     }
 
     @Test
-    @Order(2)
+//    @Order(2)
     void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -78,11 +80,19 @@ class ApplicantResourceRestTest {
     }
 
     @Test
+//    @Order(4)
     void delete() {
+        given()
+                .pathParam("id", 15L)
+                .when()
+                .delete("/{id}")
+                .then()
+                .statusCode(200)
+                .log().everything();
     }
 
     @Test
-    @Order(3)
+//    @Order(3)
     void getAllByBranche() {
         given()
                 .pathParam("branche", "Gastronomie")
