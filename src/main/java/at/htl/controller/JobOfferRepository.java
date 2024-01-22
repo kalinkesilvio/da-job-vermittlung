@@ -15,8 +15,8 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
     EntityManager em;
 
     @Transactional
-    public void save(JobOffer jobOffer) {
-        em.persist(jobOffer);
+    public JobOffer save(JobOffer jobOffer) {
+        return em.merge(jobOffer);
     }
 
     @Transactional
