@@ -12,6 +12,8 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("/joboffer")
 public class JobOfferResource {
@@ -44,5 +46,16 @@ public class JobOfferResource {
     @Path("/getAll")
     public Response getAll() {
         return Response.ok(jobOfferRepository.listAll()).build();
+    }
+
+    @GET
+    @Path("/getByStringPartial/{partial}")
+    public Response getByStringPartial(@PathParam("partial") String partial) {
+        List<JobOffer> jobOffers = new ArrayList<>(jobOfferRepository.getJobOffersWithPartialString(partial));
+
+        if (!jobOffers.isEmpty()) {
+            return Response.ok(jobOffers).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 }
