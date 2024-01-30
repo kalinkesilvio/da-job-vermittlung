@@ -31,4 +31,13 @@ class JobOfferRepositoryTest {
         assertEquals("Koch an Wochenenden", jobOffers.get(0).title);
         assertEquals("Kellner an Wochenenden", jobOffers.get(1).title);
     }
+
+    @Test
+    void getJobOffersWithPartialString_NOT_FOUND() {
+        String partial = "WAD";
+
+        List<JobOffer> jobOffers = jobOfferRepository.getJobOffersWithPartialString(partial);
+
+        assertTrue(jobOffers.isEmpty());
+    }
 }
