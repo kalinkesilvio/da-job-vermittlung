@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
@@ -27,6 +28,16 @@ public class JobOfferResource {
             return Response.created(URI.create("company/" + jobOffer1.id)).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+
+    @GET
+    @Path("/{id}")
+    public Response getById(@PathParam("id") Long id) {
+        JobOffer jobOffer = jobOfferRepository.findById(id);
+        if (jobOffer != null) {
+            return Response.ok(jobOffer).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @GET
