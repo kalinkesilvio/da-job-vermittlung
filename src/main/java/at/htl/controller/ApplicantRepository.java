@@ -22,11 +22,6 @@ public class ApplicantRepository implements PanacheRepository<Applicant> {
         return em.merge(applicant);
     }
 
-    @Transactional
-    public Applicant saveWithReturn(Applicant applicant) {
-        return em.merge(applicant);
-    }
-
     public Applicant getApplicantById(Long id) {
         return findById(id);
     }
@@ -40,7 +35,7 @@ public class ApplicantRepository implements PanacheRepository<Applicant> {
     public Applicant addAddress(Long id, Address newAddress) {
         Applicant applicant = findById(id);
         applicant.address = newAddress;
-        return this.saveWithReturn(applicant);
+        return this.save(applicant);
     }
 
     public List<Applicant> getByBranche(String branche) {
