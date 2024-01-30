@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
@@ -92,5 +93,33 @@ class JobOfferResourceTest {
         assertTrue(response.hasEntity());
         assertEquals(1L, jobOfferFromResponse.id);
         assertEquals("Kellner*in", jobOfferFromResponse.title);
+    }
+
+    @Test
+    void getJobOffersByStringPartial_OK() {
+        String partialString = "Kel";
+        List<JobOffer> jobOffers = new ArrayList<>();
+        jobOffers.add(jobOffer);
+
+        Mockito.when(jobOfferRepository.getJobOffersWithPartialString(partialString)).thenReturn(jobOffers);
+
+        Response response = jobOfferResource.getByStringPartial(partialString);
+        List<JobOffer> jobOffersResponse = (List<JobOffer>) response.getEntity();
+
+        assertTrue(response.hasEntity());
+        assertEquals(1L, jobOffersResponse.get(0).id);
+        assertEquals("Kellner*in", jobOffersResponse.get(0).title);
+    }
+    @Test
+    void getJobOffersByStringPartial_NOT_FOUND() {
+        String partialString = "PARF";
+
+        Mockito.when(jobOfferRepository.getJobOffersWithPartialString(partialString)).thenReturn(List.of());
+
+        Response response = jobOfferResource.getByStringPartial(partialString);
+        List<JobOffer> jobOffersResponse = (List<JobOffer>) response.getEntity();
+
+        assertFalse(response.hasEntity());
+        assertEquals(response.getStatusInfo(), Response.Status.NOT_FOUND);
     }
 }
