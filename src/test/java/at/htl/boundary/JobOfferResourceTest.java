@@ -81,4 +81,16 @@ class JobOfferResourceTest {
         assertEquals(1L, entity.get(0).id);
         assertEquals("Kellner*in", entity.get(0).title);
     }
+
+    @Test
+    void getById() {
+        Mockito.when(jobOfferRepository.findById(1L)).thenReturn(jobOffer);
+
+        Response response = jobOfferResource.getById(1L);
+        JobOffer jobOfferFromResponse = (JobOffer) response.getEntity();
+
+        assertTrue(response.hasEntity());
+        assertEquals(1L, jobOfferFromResponse.id);
+        assertEquals("Kellner*in", jobOfferFromResponse.title);
+    }
 }
