@@ -5,6 +5,7 @@ import at.htl.entity.Company;
 import at.htl.entity.JobOffer;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
@@ -26,5 +27,11 @@ public class JobOfferResource {
             return Response.created(URI.create("company/" + jobOffer1.id)).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+
+    @GET
+    @Path("/getAll")
+    public Response getAll() {
+        return Response.ok(jobOfferRepository.listAll()).build();
     }
 }

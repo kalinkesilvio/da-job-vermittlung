@@ -2,6 +2,7 @@ package at.htl.boundary;
 
 import at.htl.controller.CompanyRepository;
 import at.htl.controller.JobOfferRepository;
+import at.htl.entity.Applicant;
 import at.htl.entity.Company;
 import at.htl.entity.JobOffer;
 import io.quarkus.test.InjectMock;
@@ -11,6 +12,9 @@ import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,5 +61,24 @@ class JobOfferResourceTest {
         assertNotNull(response);
         assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
         assertNotNull(response.getLocation());
+    }
+
+    @Test
+    void getAll() {
+        List<JobOffer> jobOffers = new ArrayList<>();
+        jobOffers.add(jobOffer);
+
+        Mockito.when(jobOfferRepository.listAll()).thenReturn(jobOffers);
+        Response response = jobOfferResource.getAll();
+
+        assertNotNull(response);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertNotNull(response.getEntity());
+
+        List<JobOffer> entity = (List<JobOffer>) response.getEntity();
+
+        assertFalse(entity.isEmpty());
+        assertEquals(1L, entity.get(0).id);
+        assertEquals("Kellner*in", entity.get(0).title);
     }
 }
