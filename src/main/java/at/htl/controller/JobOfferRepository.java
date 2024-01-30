@@ -7,6 +7,9 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @ApplicationScoped
 public class JobOfferRepository implements PanacheRepository<JobOffer> {
 
@@ -22,6 +25,14 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
     @Transactional
     public JobOffer saveWithReturn(JobOffer jobOffer) {
         return em.merge(jobOffer);
+    }
+
+    public List<JobOffer> getJobOffersWithPartialString(String partial) {
+        return findAll()
+                .stream()
+                .filter(j -> j.title.contains(partial)
+                        || j.category.contains(partial))
+                .collect(Collectors.toList());
     }
 
 
