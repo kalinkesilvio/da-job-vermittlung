@@ -64,8 +64,8 @@ class JobOfferResourceRestTest {
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
                 .body("id", is(13),
-                        "jobbranche", is("Kartografie"),
-                        "salary", is(3000));
+                        "category", is("Kartografie"),
+                        "salary", is(3000.0F));
     }
 
     @Test
