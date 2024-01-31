@@ -22,7 +22,6 @@ public class JobOfferResource {
     JobOfferRepository jobOfferRepository;
 
     @POST
-    @Transactional
     @Path("/create")
     public Response create(JobOffer jobOffer) {
         JobOffer jobOffer1 = jobOfferRepository.save(jobOffer);

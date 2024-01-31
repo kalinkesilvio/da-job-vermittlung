@@ -17,7 +17,7 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
     @Inject
     EntityManager em;
 
-    @Transactional
+    @Transactional(value = Transactional.TxType.REQUIRES_NEW)
     public JobOffer save(JobOffer jobOffer) {
         return em.merge(jobOffer);
     }
