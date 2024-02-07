@@ -17,7 +17,7 @@ public class ApplicantRepository implements PanacheRepository<Applicant> {
     @Inject
     EntityManager em;
 
-    @Transactional
+    @Transactional // (value = Transactional.TxType.REQUIRES_NEW)
     public Applicant save(Applicant applicant) {
         return em.merge(applicant);
     }

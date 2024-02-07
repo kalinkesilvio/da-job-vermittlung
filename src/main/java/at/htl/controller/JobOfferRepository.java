@@ -7,7 +7,9 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -17,7 +19,7 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
     @Inject
     EntityManager em;
 
-    @Transactional(value = Transactional.TxType.REQUIRES_NEW)
+    @Transactional
     public JobOffer save(JobOffer jobOffer) {
         return em.merge(jobOffer);
     }
@@ -32,6 +34,46 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
                 .stream()
                 .filter(j -> j.title.contains(partial)
                         || j.category.contains(partial))
+                .collect(Collectors.toList());
+    }
+
+    public List<JobOffer> getRandomJobOffers(int quantity) {
+
+        Random random = new Random();
+
+        List<Long> ids = findAll()
+                .stream()
+                .map(jo -> jo.id)
+                .toList();
+
+        if (ids.size() < quantity) {
+            quantity = ids.size();
+        } else if (quantity == 0) {
+            return null;
+        }
+
+        List<JobOffer> filteredJobOffers = new LinkedList<>();
+
+        do {
+            findAll()
+                    .stream()
+                    .filter(j ->
+                            j.id.longValue() ==
+                                    ids.get(random.nextInt(ids.size())).longValue()
+                    )
+                    .peek(System.out::println)
+                    .forEach(filteredJobOffers::add);
+
+            filteredJobOffers = filteredJobOffers
+                    .stream()
+                    .distinct()
+                    .collect(Collectors.toList());
+
+        } while (filteredJobOffers.size() < quantity);
+
+        return filteredJobOffers
+                .stream()
+                .unordered()
                 .collect(Collectors.toList());
     }
 
