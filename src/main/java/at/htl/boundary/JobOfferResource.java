@@ -57,4 +57,14 @@ public class JobOfferResource {
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
+
+    @GET
+    @Path("getRandomJobOffers/{quantity}")
+    public Response getRandomJobOffers(@PathParam("quantity") int quantity) {
+        List<JobOffer> randomOffers = jobOfferRepository.getRandomJobOffers(quantity);
+        if (!randomOffers.isEmpty()) {
+            return Response.ok(randomOffers).build();
+        }
+        return Response.noContent().build();
+    }
 }
