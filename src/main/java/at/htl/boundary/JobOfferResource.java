@@ -5,10 +5,7 @@ import at.htl.entity.Company;
 import at.htl.entity.JobOffer;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
@@ -66,5 +63,11 @@ public class JobOfferResource {
             return Response.ok(randomOffers).build();
         }
         return Response.noContent().build();
+    }
+
+    @PUT
+    @Path("update")
+    public Response update(JobOffer jobOffer) {
+        return Response.ok(jobOfferRepository.getEntityManager().merge(jobOffer)).build();
     }
 }
