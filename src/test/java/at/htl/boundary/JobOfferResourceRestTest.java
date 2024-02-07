@@ -115,6 +115,15 @@ class JobOfferResourceRestTest {
     void getRandomJobOffers_1() {
         int quantity = 1;
 
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("quantity", quantity)
+                .when()
+                .get("getRandomJobOffers/{quantity}")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .body("size()", is(1),
+                        "get(0).id", is(notNullValue()));
     }
 
     @Test
