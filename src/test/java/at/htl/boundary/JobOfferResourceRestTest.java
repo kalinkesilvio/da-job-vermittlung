@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 @QuarkusTest
 @TestHTTPEndpoint(JobOfferResource.class)
@@ -95,5 +96,30 @@ class JobOfferResourceRestTest {
                 .log().everything()
                 .body("get(0).category", is("Gastronomie"),
                         "get(1).category", is("Gastronomie"));
+    }
+
+    @Test
+    void getRandomJobOffers_0() {
+        int quantity = 0;
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("quantity", quantity)
+                .when()
+                .get("getRandomJobOffers/{quantity}")
+                .then()
+                .statusCode(Response.Status.NO_CONTENT.getStatusCode());
+    }
+
+    @Test
+    void getRandomJobOffers_1() {
+        int quantity = 1;
+
+    }
+
+    @Test
+    void getRandomJobOffers_4() {
+        int quantity = 4;
+
     }
 }
