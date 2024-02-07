@@ -29,7 +29,7 @@ class CompanyResourceRestTest {
         this.company1 = new Company();
         company1.companyName = "CP GmbH";
         company1.branche = "Heiztechnik";
-        company1.id = 1L;
+        company1.id = 2L;
     }
     @Test
 //    @Order(99)
@@ -41,7 +41,7 @@ class CompanyResourceRestTest {
                 .post("/create")
                 .then()
                 .statusCode(Response.Status.CREATED.getStatusCode())
-                .header("location", "http://localhost:9090/api/company/1");
+                .header("location", "http://localhost:9090/api/company/2");
     }
 
     @Test

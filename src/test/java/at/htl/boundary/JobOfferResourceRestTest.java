@@ -17,6 +17,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 @QuarkusTest
+@TestTransaction
 @TestHTTPEndpoint(JobOfferResource.class)
 class JobOfferResourceRestTest {
 
@@ -42,7 +43,6 @@ class JobOfferResourceRestTest {
     }
 
     @Test
-    @TestTransaction
     void create() {
 
         this.jobOffer1.company = (Company) companyResource.getById(1L).getEntity();
