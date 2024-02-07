@@ -123,12 +123,26 @@ class JobOfferResourceRestTest {
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
                 .body("size()", is(1),
-                        "get(0).id", is(notNullValue()));
+                        "get(0).id", is(notNullValue()))
+                .log().body();
     }
 
     @Test
     void getRandomJobOffers_4() {
         int quantity = 4;
 
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("quantity", quantity)
+                .when()
+                .get("getRandomJobOffers/{quantity}")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .body("size()", is(4),
+                        "get(0).id", is(notNullValue()),
+                        "get(1).id", is(notNullValue()),
+                        "get(2).id", is(notNullValue()),
+                        "get(3).id", is(notNullValue()))
+                .log().body();
     }
 }

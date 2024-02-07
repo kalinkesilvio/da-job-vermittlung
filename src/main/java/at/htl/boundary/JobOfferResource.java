@@ -59,7 +59,7 @@ public class JobOfferResource {
     @Path("getRandomJobOffers/{quantity}")
     public Response getRandomJobOffers(@PathParam("quantity") int quantity) {
         List<JobOffer> randomOffers = jobOfferRepository.getRandomJobOffers(quantity);
-        if (randomOffers != null) {
+        if (!randomOffers.isEmpty()) {
             return Response.ok(randomOffers).build();
         }
         return Response.noContent().build();

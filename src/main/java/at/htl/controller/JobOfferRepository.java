@@ -49,20 +49,13 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
         if (ids.size() < quantity) {
             quantity = ids.size();
         } else if (quantity == 0) {
-            return null;
+            return List.of();
         }
 
         List<JobOffer> filteredJobOffers = new LinkedList<>();
 
         do {
-            findAll()
-                    .stream()
-                    .filter(j ->
-                            j.id.longValue() ==
-                                    ids.get(random.nextInt(ids.size())).longValue()
-                    )
-                    .peek(System.out::println)
-                    .forEach(filteredJobOffers::add);
+            filteredJobOffers.add(findById(ids.get(random.nextInt(ids.size()))));
 
             filteredJobOffers = filteredJobOffers
                     .stream()
