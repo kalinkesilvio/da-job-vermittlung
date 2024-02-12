@@ -169,15 +169,29 @@ insert into applicant --(id, firstname, lastname, jobbranche)
                          );
 
 insert into action values(
-                              '2023-12-03',
+                              '2023-12-03 15:06:24',
                               14,
                               2,
                               1,
                               'favorable'
                          );
 
+insert into action values(
+                              '2024-01-03',
+                              14,
+                              2,
+                              2,
+                              'like'
+                         );
+
 insert into application values(
                                14,
                                1,
+                               12
+                              );
+
+insert into application values(
+                               15,
+                               2,
                                12
                               );

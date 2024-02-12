@@ -5,6 +5,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class ActionRepository implements PanacheRepository<Action> {
@@ -12,6 +13,7 @@ public class ActionRepository implements PanacheRepository<Action> {
     @Inject
     EntityManager em;
 
+    @Transactional
     public Action save(Action action) {
         return em.merge(action);
     }
