@@ -82,8 +82,8 @@ class JobOfferResourceRestTest {
     }
 
     @Test
-    void getByStringPartial() {
-        String partial = "Gastr";
+    void getByStringPartial_1() {
+        String partial = "Koch";
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -92,10 +92,25 @@ class JobOfferResourceRestTest {
                 .get("/getByStringPartial/{partial}")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
-                .body("size()", is(2))
+                .body("size()", is(1))
                 .log().everything()
                 .body("get(0).category", is("Gastronomie"),
-                        "get(1).category", is("Gastronomie"));
+                        "get(0).title", is("Koch an Wochenenden"));
+    }
+
+    @Test
+    void getByStringPartial_NOT_FOUND() {
+        String partial = "KoAWDAWFAG4ch";
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("partial", partial)
+                .when()
+                .get("/getByStringPartial/{partial}")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode())
+                .body("size()", is(0))
+                .log().everything();
     }
 
     @Test
@@ -144,5 +159,22 @@ class JobOfferResourceRestTest {
                         "get(2).id", is(notNullValue()),
                         "get(3).id", is(notNullValue()))
                 .log().body();
+    }
+
+    @Test
+    void getJobOfferByCategory() {
+        String category = "gastronomie";
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("category", category)
+                .when()
+                .get("getJobOfferByCategory/{category}")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .body("size()", is(2))
+                .log().everything()
+                .body("get(0).category", is("Gastronomie"),
+                        "get(1).category", is("Gastronomie"));
     }
 }
