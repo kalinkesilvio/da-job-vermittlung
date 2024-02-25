@@ -71,4 +71,11 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
     }
 
 
+    public List<JobOffer> getByCategory(String category) {
+        return em.createQuery(
+                "SELECT j FROM JobOffer j WHERE LOWER(j.category) = LOWER(?1)", JobOffer.class
+            )
+                .setParameter(1, category)
+                .getResultList();
+    }
 }

@@ -65,6 +65,16 @@ public class JobOfferResource {
         return Response.noContent().build();
     }
 
+    @GET
+    @Path("getJobOfferByCategory/{category}")
+    public Response getJobOfferByCategory(@PathParam("category") String category) {
+        List<JobOffer> jobOffers = jobOfferRepository.getByCategory(category);
+        if (!jobOffers.isEmpty()) {
+            return Response.ok(jobOffers).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
     @PUT
     @Path("update")
     public Response update(JobOffer jobOffer) {
