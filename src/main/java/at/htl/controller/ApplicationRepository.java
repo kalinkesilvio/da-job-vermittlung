@@ -22,4 +22,12 @@ public class ApplicationRepository implements PanacheRepository<Application> {
                 .setParameter(1, id)
                 .getResultList();
     }
+
+    public List<Application> findByApplicantId(Long id) {
+        return em.createQuery(
+                "SELECT a FROM Application a WHERE a.applicant.id = ?1", Application.class
+                )
+                .setParameter(1, id)
+                .getResultList();
+    }
 }

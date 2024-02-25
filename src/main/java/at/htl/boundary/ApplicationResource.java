@@ -26,4 +26,14 @@ public class ApplicationResource {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    @GET
+    @Path("/getByApplicantId/{id}")
+    public Response getByApplicantId(@PathParam("id") Long id) {
+        List<Application> applications = applicationRepository.findByApplicantId(id);
+        if (!applications.isEmpty()) {
+            return Response.ok(applications).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
 }
