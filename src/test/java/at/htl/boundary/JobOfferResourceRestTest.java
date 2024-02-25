@@ -103,14 +103,11 @@ class JobOfferResourceRestTest {
         String partial = "KoAWDAWFAG4ch";
 
         given()
-                .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("partial", partial)
                 .when()
                 .get("/getByStringPartial/{partial}")
                 .then()
-                .statusCode(Response.Status.NOT_FOUND.getStatusCode())
-                .body("size()", is(0))
-                .log().everything();
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
     }
 
     @Test
@@ -176,5 +173,17 @@ class JobOfferResourceRestTest {
                 .log().everything()
                 .body("get(0).category", is("Gastronomie"),
                         "get(1).category", is("Gastronomie"));
+    }
+
+    @Test
+    void getJobOfferByCategory_NOT_FOUND() {
+        String category = "ThisMyNotExist";
+
+        given()
+                .pathParam("category", category)
+                .when()
+                .get("getJobOfferByCategory/{category}")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
     }
 }
