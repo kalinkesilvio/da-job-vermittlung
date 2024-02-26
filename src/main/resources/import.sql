@@ -168,20 +168,21 @@ insert into applicant --(id, firstname, lastname, jobbranche)
                                 'Autodidakt'
                          );
 
-insert into action values(
-                              '2023-12-03 15:06:24',
+insert into action (id, applicant_id, company_id, actionname, actiondate) values(
+                              100,
                               14,
                               2,
-                              1,
-                              'favorable'
+                              'favorable',
+                            '2023-12-03 15:06:24'
                          );
 
-insert into action values(
-                              '2024-01-03',
+insert into action (id, applicant_id, company_id, actionname, actiondate) values(
+                              101,
                               14,
                               2,
-                              2,
-                              'like'
+                              'like',
+                              '2024-01-03 00:00:00'
+
                          );
 
 insert into application values(

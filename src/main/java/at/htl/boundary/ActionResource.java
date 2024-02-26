@@ -3,10 +3,9 @@ package at.htl.boundary;
 import at.htl.controller.ActionRepository;
 import at.htl.entity.Action;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
@@ -18,6 +17,8 @@ public class ActionResource {
     ActionRepository actionRepository;
 
     @POST
+    @Transactional
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response create(Action action) {
         Action savedAction = actionRepository.save(action);
         if (savedAction != null) {

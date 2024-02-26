@@ -12,9 +12,7 @@ import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import static io.restassured.RestAssured.given;
 
@@ -32,19 +30,16 @@ class ActionResourceRestTest {
 
     @BeforeEach
     void setUp() {
-        this.testAction = new Action();
-        this.testAction.id = 2L;
-        this.testAction.actionName = "high interest";
-        this.testAction.actionDate = LocalDateTime.parse(
-                LocalDateTime.of(2022, 5, 10, 15, 22, 32)
-                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     }
 
     @Test
     @TestTransaction
     void create() {
-        testAction.applicant = applicantRepository.getApplicantById(14L);
-        testAction.company = companyRepository.getCompanyById(2L);
+        testAction = new Action();
+        testAction.actionName = "high interest";
+//        testAction.applicant = applicantRepository.getApplicantById(14L);
+//        testAction.company = companyRepository.getCompanyById(2L);
+        testAction.actionDate = LocalDateTime.now();//LocalDateTime.of(2024, 12, 5, 12, 5, 12);
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -54,7 +49,7 @@ class ActionResourceRestTest {
                 .then()
                 .log().everything()
                 .statusCode(Response.Status.CREATED.getStatusCode())
-                .header("location", "http://localhost:9090/api/action/3");
+                .header("location", "http://localhost:8081/api/action/1 ");
     }
 
     @Test
