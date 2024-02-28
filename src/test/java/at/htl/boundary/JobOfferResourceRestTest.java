@@ -6,7 +6,6 @@ import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,48 +16,46 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 @QuarkusTest
-@TestTransaction
 @TestHTTPEndpoint(JobOfferResource.class)
-class JobOfferResourceRestTest {
+public class JobOfferResourceRestTest {
 
     @Inject
     CompanyResource companyResource;
-    private JobOffer jobOffer1;
-    private Company testCompany;
 
-    @BeforeEach
-    void setUp() {
-        testCompany = new Company();
-        testCompany.id = 30L;
-        testCompany.companyName = "Kuckuruz";
-        testCompany.branche = "Gastwirtschaft";
-        testCompany.email = "kukcuruz@office.gmail.com";
+//    @BeforeEach
+//    void setUp() {
+//
+//    }
 
-        jobOffer1 = new JobOffer();
-        jobOffer1.id = 1L;
+    @Test
+    @TestTransaction
+    public void create() {
+
+        JobOffer jobOffer1 = new JobOffer();
         jobOffer1.category = "Solartechnik";
         jobOffer1.salary = 3500.00;
         jobOffer1.condition = "Bachelor Solartechnik & Energieerhaltung";
         jobOffer1.title = "End-Testing für Solartechnik";
-    }
 
-    @Test
-    void create() {
+        Company testCompany = new Company();
+        testCompany.companyName = "Kuckuruz";
+        testCompany.branche = "Gastwirtschaft";
+        testCompany.email = "kukcuruz@office.gmail.com";
 
-        this.jobOffer1.company = (Company) companyResource.getById(1L).getEntity();
+        jobOffer1.company = (Company) companyResource.getById(1L).getEntity();
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(this.jobOffer1)
+                .body(jobOffer1)
                 .when()
                 .post("/create")
                 .then()
                 .statusCode(Response.Status.CREATED.getStatusCode())
-                .header("location", "http://localhost:9090/api/joboffer/1");
+                .header("location", "http://localhost:8081/api/joboffer/1");
     }
 
     @Test
-    void getById() {
+    public void getById() {
         given()
                 .pathParam("id", 13)
                 .when()
@@ -71,7 +68,7 @@ class JobOfferResourceRestTest {
     }
 
     @Test
-    void getAll() {
+    public void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .when()
@@ -82,7 +79,7 @@ class JobOfferResourceRestTest {
     }
 
     @Test
-    void getByStringPartial_1() {
+    public void getByStringPartial_1() {
         String partial = "Koch";
 
         given()
@@ -99,7 +96,7 @@ class JobOfferResourceRestTest {
     }
 
     @Test
-    void getByStringPartial_NOT_FOUND() {
+    public void getByStringPartial_NOT_FOUND() {
         String partial = "KoAWDAWFAG4ch";
 
         given()
@@ -111,7 +108,7 @@ class JobOfferResourceRestTest {
     }
 
     @Test
-    void getRandomJobOffers_0() {
+    public void getRandomJobOffers_0() {
         int quantity = 0;
 
         given()
@@ -124,7 +121,7 @@ class JobOfferResourceRestTest {
     }
 
     @Test
-    void getRandomJobOffers_1() {
+    public void getRandomJobOffers_1() {
         int quantity = 1;
 
         given()
@@ -140,7 +137,7 @@ class JobOfferResourceRestTest {
     }
 
     @Test
-    void getRandomJobOffers_4() {
+    public void getRandomJobOffers_4() {
         int quantity = 4;
 
         given()
@@ -159,7 +156,7 @@ class JobOfferResourceRestTest {
     }
 
     @Test
-    void getJobOfferByCategory() {
+    public void getJobOfferByCategory() {
         String category = "gastronomie";
 
         given()
@@ -176,8 +173,8 @@ class JobOfferResourceRestTest {
     }
 
     @Test
-    void getJobOfferByCategory_NOT_FOUND() {
-        String category = "ThisMyNotExist";
+    public void getJobOfferByCategory_NOT_FOUND() {
+        String category = "ThisMayNotExist";
 
         given()
                 .pathParam("category", category)

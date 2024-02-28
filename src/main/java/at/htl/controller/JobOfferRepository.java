@@ -19,13 +19,7 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
     @Inject
     EntityManager em;
 
-    @Transactional
     public JobOffer save(JobOffer jobOffer) {
-        return em.merge(jobOffer);
-    }
-
-    @Transactional
-    public JobOffer saveWithReturn(JobOffer jobOffer) {
         return em.merge(jobOffer);
     }
 
@@ -76,6 +70,14 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
                 "SELECT j FROM JobOffer j WHERE LOWER(j.category) = LOWER(?1)", JobOffer.class
             )
                 .setParameter(1, category)
+                .getResultList();
+    }
+
+    public List<JobOffer> getByCompany(Long companyId) {
+        return em.createQuery(
+                "SELECT j FROM JobOffer j WHERE j.company.id = ?1", JobOffer.class
+        )
+                .setParameter(1, companyId)
                 .getResultList();
     }
 }

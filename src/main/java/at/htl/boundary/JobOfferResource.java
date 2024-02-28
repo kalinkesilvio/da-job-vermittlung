@@ -20,6 +20,7 @@ public class JobOfferResource {
 
     @POST
     @Path("/create")
+    @Transactional
     public Response create(JobOffer jobOffer) {
         JobOffer jobOffer1 = jobOfferRepository.save(jobOffer);
         if (jobOffer1 != null) {
@@ -69,6 +70,16 @@ public class JobOfferResource {
     @Path("getJobOfferByCategory/{category}")
     public Response getJobOfferByCategory(@PathParam("category") String category) {
         List<JobOffer> jobOffers = jobOfferRepository.getByCategory(category);
+        if (!jobOffers.isEmpty()) {
+            return Response.ok(jobOffers).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @GET
+    @Path("getByCompanyId/{companyId}")
+    public Response getJobOfferByCompany(@PathParam("companyId") Long companyId) {
+        List<JobOffer> jobOffers = jobOfferRepository.getByCompany(companyId);
         if (!jobOffers.isEmpty()) {
             return Response.ok(jobOffers).build();
         }

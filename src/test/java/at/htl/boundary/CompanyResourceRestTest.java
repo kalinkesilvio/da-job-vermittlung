@@ -41,7 +41,7 @@ class CompanyResourceRestTest {
                 .post("/create")
                 .then()
                 .statusCode(Response.Status.CREATED.getStatusCode())
-                .header("location", "http://localhost:9090/api/company/2");
+                .header("location", "http://localhost:8081/api/company/2");
     }
 
     @Test

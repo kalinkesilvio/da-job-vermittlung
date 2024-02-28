@@ -82,13 +82,13 @@ public class ApplicantResource {
     }
 
 
-    @POST
-    @Transactional
-    @Path("/addAddress")
-    public Response addAddress(Applicant applicant, Address address) {
-        applicantRepository.addAddress(applicant.id, address);
-        return Response.created(URI.create("applicant/" + applicant.id)).build();
-    }
+//    @POST
+//    @Transactional
+//    @Path("/addAddress")
+//    public Response addAddress(Applicant applicant, Address address) {
+//        applicantRepository.addAddress(applicant.id, address);
+//        return Response.created(URI.create("applicant/" + applicant.id)).build();
+//    }
 
     @GET
     @Path("getAllByBranche/{branche}")

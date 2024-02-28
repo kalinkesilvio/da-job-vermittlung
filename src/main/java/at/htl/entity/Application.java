@@ -5,15 +5,27 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Application extends PanacheEntity {
 
     @JoinColumn
     @ManyToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Applicant applicant;
 
     @JoinColumn
     @ManyToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public JobOffer jobOffer;
+
+    public Application() {
+    }
+
+    public Application(Applicant applicant, JobOffer jobOffer) {
+        this.applicant = applicant;
+        this.jobOffer = jobOffer;
+    }
 }

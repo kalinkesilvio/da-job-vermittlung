@@ -49,7 +49,7 @@ class ActionResourceRestTest {
                 .then()
                 .log().everything()
                 .statusCode(Response.Status.CREATED.getStatusCode())
-                .header("location", "http://localhost:8081/api/action/1 ");
+                .header("location", "http://localhost:8081/api/action/1");
     }
 
     @Test

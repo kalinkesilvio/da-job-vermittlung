@@ -12,7 +12,6 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-@TestTransaction
 @TestHTTPEndpoint(ApplicantResource.class)
 //@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ApplicantResourceRestTest {
@@ -37,6 +36,7 @@ class ApplicantResourceRestTest {
 
     @Test
 //    @Order(4)
+    @TestTransaction
     void create() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -46,7 +46,7 @@ class ApplicantResourceRestTest {
                 .prettyPeek()
                 .then()
                 .statusCode(Response.Status.CREATED.getStatusCode())
-                .header("location", "http://localhost:9090/api/applicant/1");
+                .header("location", "http://localhost:8081/api/applicant/1");
     }
 
 //    @Test

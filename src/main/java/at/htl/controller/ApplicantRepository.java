@@ -2,10 +2,12 @@ package at.htl.controller;
 
 import at.htl.entity.Address;
 import at.htl.entity.Applicant;
+import at.htl.entity.Application;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -28,7 +30,12 @@ public class ApplicantRepository implements PanacheRepository<Applicant> {
 
     @Transactional
     public boolean remove(Long id) {
-        return deleteById(id);
+        Applicant applicant = em.find(Applicant.class, id);
+        if (applicant != null) {
+            em.remove(applicant);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
