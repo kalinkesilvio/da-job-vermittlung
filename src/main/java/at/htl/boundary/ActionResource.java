@@ -41,4 +41,15 @@ public class ActionResource {
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
+
+    @DELETE
+    @Transactional
+    @Path("/{id}")
+    public Response delete(@PathParam("id") Long id) {
+        boolean deleted = actionRepository.deleteById(id);
+        if (deleted) {
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
+    }
 }

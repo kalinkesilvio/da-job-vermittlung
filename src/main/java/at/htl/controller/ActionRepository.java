@@ -17,4 +17,5 @@ public class ActionRepository implements PanacheRepository<Action> {
     public Action save(Action action) {
         return em.merge(action);
     }
+
 }
