@@ -28,6 +28,7 @@ public class ActionResource {
     }
 
     @GET
+    @Path("/getAll")
     public Response getAll() {
         return Response.ok(actionRepository.listAll()).build();
     }

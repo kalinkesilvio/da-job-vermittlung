@@ -28,4 +28,31 @@ public class AddressResource {
         addressRepository.save(address);
         return Response.created(URI.create("address/" + address.id)).build();
     }
+
+    @PUT
+    @Path("update/{id}")
+    public Response updateById(@PathParam("id") Long id, Address address) {
+        return addressRepository
+                .findByIdOptional(id)
+                .map(a -> {
+                            a.city = address.city;
+                            a.country = address.country;
+                            a.state = address.state;
+                            a.street = address.street;
+                            a.streetNo = address.streetNo;
+                            a.zipNo = address.zipNo;
+                            return Response.ok(a).build();
+                        })
+                .orElse(Response.status(Response.Status.NOT_FOUND).build());
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response delete(@PathParam("id") Long id) {
+        boolean deleted = addressRepository.deleteById(id);
+        if (deleted) {
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
 }

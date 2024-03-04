@@ -15,18 +15,11 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.is;
 
 @QuarkusTest
 @TestHTTPEndpoint(ActionResource.class)
 class ActionResourceRestTest {
-
-    private Action testAction;
-
-    @Inject
-    ApplicantRepository applicantRepository;
-
-    @Inject
-    CompanyRepository companyRepository;
 
     @BeforeEach
     void setUp() {
@@ -35,7 +28,7 @@ class ActionResourceRestTest {
     @Test
     @TestTransaction
     void create() {
-        testAction = new Action();
+        Action testAction = new Action();
         testAction.actionName = "high interest";
 //        testAction.applicant = applicantRepository.getApplicantById(14L);
 //        testAction.company = companyRepository.getCompanyById(2L);
@@ -54,9 +47,28 @@ class ActionResourceRestTest {
 
     @Test
     void getAll() {
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .get("/getAll")
+                .then()
+                .statusCode(200)
+                .body("size()", is(2));
     }
 
     @Test
     void findById() {
+    }
+
+    @Test
+    @TestTransaction
+    void delete() {
+        Long id = 100L;
+        given()
+                .pathParam("id", id)
+                .when()
+                .delete("/{id}")
+                .then()
+                .statusCode(200);
     }
 }

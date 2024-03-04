@@ -31,7 +31,7 @@ public class Applicant extends PanacheEntity{
     public String imageUrl;
 
     @JoinColumn
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     public Address address;
 
     public Applicant() {
