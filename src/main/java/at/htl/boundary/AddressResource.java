@@ -9,7 +9,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
 
-@Path("address")
+@Path("/address")
 public class AddressResource {
 
     @Inject
@@ -23,7 +23,7 @@ public class AddressResource {
     }
 
     @POST
-    @Path("/create")
+    @Path("/")
     public Response create(Address address) {
         addressRepository.save(address);
         return Response.created(URI.create("address/" + address.id)).build();
