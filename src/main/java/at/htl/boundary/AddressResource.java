@@ -41,7 +41,7 @@ public class AddressResource {
                             a.street = address.street;
                             a.streetNo = address.streetNo;
                             a.zipNo = address.zipNo;
-                            return Response.ok(a).build();
+                            return Response.ok(addressRepository.saveWithReturn(a)).build();
                         })
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
     }

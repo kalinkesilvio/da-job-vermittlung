@@ -9,6 +9,7 @@ import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
@@ -45,6 +46,35 @@ class AddressResourceRestTest {
 
     @Test
     void updateById() {
+
+        Address testUpdateAddress = new Address(
+                "UpdateTeststraße",
+                "22",
+                3465,
+                "Teststadt",
+                "updatedTestland",
+                "Teststaat"
+        );
+        testUpdateAddress.id = 5L;
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("id", testUpdateAddress.id)
+                .body(testUpdateAddress)
+                .when()
+                .put("/update/{id}")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .body("street", is(testUpdateAddress.street));
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("id", testUpdateAddress.id)
+                .when()
+                .get("/{id}")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .body("street", is(testUpdateAddress.street));
     }
 
     @Test
