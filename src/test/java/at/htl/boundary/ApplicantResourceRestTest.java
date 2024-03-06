@@ -1,11 +1,15 @@
 package at.htl.boundary;
 
+import at.htl.controller.ApplicantRepository;
+import at.htl.entity.Address;
 import at.htl.entity.Applicant;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
@@ -18,6 +22,9 @@ class ApplicantResourceRestTest {
 
      private Applicant applicant;
     private Applicant applicant2;
+
+    @Inject
+    ApplicantRepository applicantRepository;
 
     @BeforeEach
     void setUp() {
@@ -103,5 +110,35 @@ class ApplicantResourceRestTest {
                 .statusCode(200)
                 .log().body()
                 .body("size()", is(1));
+    }
+
+    @Test
+    void updateById() {
+
+        Applicant testApplicant = applicantRepository.getApplicantById(14L);
+        testApplicant.lastName = "Prameeeeek";
+        testApplicant.email = "pramek1231234@gmail.com";
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("id", testApplicant.id)
+                .body(testApplicant)
+                .when()
+                .put("/{id}")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .log().body()
+                .body("lastName", is(testApplicant.lastName),
+                        "email", is(testApplicant.email));
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("id", testApplicant.id)
+                .when()
+                .get("/{id}")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .body("lastName", is(testApplicant.lastName),
+                        "email", is(testApplicant.email));
     }
 }
