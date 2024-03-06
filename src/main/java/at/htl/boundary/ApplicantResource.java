@@ -54,7 +54,7 @@ public class ApplicantResource {
                          a.interestDescr = applicant.interestDescr;
                          a.lastName = applicant.lastName;
                          a.preferableWork = applicant.preferableWork;
-                         return Response.ok(a).build();
+                         return Response.ok(applicantRepository.save(a)).build();
                         }
                 ).orElse(Response.status(Response.Status.NOT_FOUND).build());
     }
