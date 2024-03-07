@@ -23,11 +23,6 @@ public class CompanyRepository implements PanacheRepository<Company> {
         return em.merge(company);
     }
 
-    @Transactional
-    public Company updateWithReturn(Company company) {
-        return em.merge(company);
-    }
-
     public Company getCompanyById(Long id) {
         return findById(id);
     }
@@ -41,6 +36,6 @@ public class CompanyRepository implements PanacheRepository<Company> {
     public Company addAddressById(Long companyId, Long addressId) {
         Company company = findById(companyId);
         company.address = addressRepository.findById(addressId);
-        return this.updateWithReturn(company);
+        return this.save(company);
     }
 }
