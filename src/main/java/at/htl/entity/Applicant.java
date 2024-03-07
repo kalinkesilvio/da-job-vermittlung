@@ -15,6 +15,7 @@ public class Applicant extends PanacheEntity{
 
     public String password;
 
+    @Column(length = 10485768)
     public String resumeUrl;
     public String descr;
     public String skillDescr;
@@ -28,6 +29,8 @@ public class Applicant extends PanacheEntity{
 
     public int hoursPerWeek;
     public boolean commute;
+
+    @Column(length = 10485768)
     public String imageUrl;
 
     @JoinColumn
