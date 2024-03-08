@@ -6,8 +6,10 @@ import at.htl.entity.Applicant;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 
 import java.net.URI;
 import java.util.Optional;
@@ -33,30 +35,11 @@ public class ApplicantResource {
 
     @PUT
     @Transactional
-    @Path("/{id}")
-    public Response updateById(@PathParam("id") Long id, Applicant applicant) {
-        return applicantRepository
-                .findByIdOptional(id)
-                .map(
-                        a -> {
-                         a.jobBranche = applicant.jobBranche;
-                         a.skillDescr = applicant.skillDescr;
-                         a.firstName = applicant.firstName;
-                         a.address = applicant.address;
-                         a.jobField = applicant.jobField;
-                         a.email = applicant.email;
-                         a.password = applicant.password;
-                         a.commute = applicant.commute;
-                         a.descr = applicant.descr;
-                         a.hoursPerWeek = applicant.hoursPerWeek;
-                         a.imageUrl = applicant.imageUrl;
-                         a.resumeUrl = applicant.resumeUrl;
-                         a.interestDescr = applicant.interestDescr;
-                         a.lastName = applicant.lastName;
-                         a.preferableWork = applicant.preferableWork;
-                         return Response.ok(applicantRepository.save(a)).build();
-                        }
-                ).orElse(Response.status(Response.Status.NOT_FOUND).build());
+    @Path("/update")
+    public Response update(Applicant applicant, @Context UriInfo uriInfo) {
+        return Response.created(URI.create(
+                uriInfo.getPath() + "/" + applicantRepository.save(applicant).id
+        )).build();
     }
 
     @GET

@@ -31,22 +31,11 @@ public class CompanyResource {
 
     @PUT
     @Transactional
-    @Path("/{id}")
-    public Response update(@PathParam("id") Long id, Company company) {
-        return companyRepository
-                .findByIdOptional(id)
-                .map(
-                        c ->
-                        {
-                            c.email = company.email;
-                            c.branche = company.branche;
-                            c.companyName = company.companyName;
-                            c.address = company.address;
-                            c.imageUrl = company.imageUrl;
-                            c.websiteUrl = company.websiteUrl;
-                            return Response.ok(companyRepository.save(c)).build();
-                        }
-                ).orElse(Response.status(Response.Status.NOT_FOUND).build());
+    @Path("/update")
+    public Response update(Company company, @Context UriInfo uriInfo) {
+        return Response.created(URI.create(
+                uriInfo.getPath() + "/" + companyRepository.save(company).id
+        )).build();
     }
 
     @PUT
