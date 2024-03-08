@@ -9,6 +9,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -58,6 +59,15 @@ class ActionResourceRestTest {
 
     @Test
     void findById() {
+        given()
+                .pathParam("id", "100")
+                .when()
+                .get("/{id}")
+                .then()
+                .statusCode(200)
+                .log().body()
+                .body("actionName", is("favorable"),
+                        "actionDate", is("2023-12-03T15:06:24"));
     }
 
     @Test
