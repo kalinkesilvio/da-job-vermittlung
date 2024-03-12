@@ -4,11 +4,10 @@ import at.htl.controller.ApplicationRepository;
 import at.htl.entity.Application;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 
 import java.net.URI;
 import java.util.List;
@@ -29,6 +28,15 @@ public class ApplicationResource {
             return Response.created(URI.create("application/" + application1.id)).build();
         }
         return Response.noContent().build();
+    }
+
+    @PUT
+    @Path("/update")
+    @Transactional
+    public Response update(Application application, @Context UriInfo uriInfo) {
+        return Response.created(URI.create(
+                uriInfo.getPath() + "/" + applicationRepository.save(application).id
+        )).build();
     }
 
     @GET
