@@ -34,4 +34,8 @@ public class ApplicationRepository implements PanacheRepository<Application> {
     public Application save(Application application) {
         return em.merge(application);
     }
+
+    public boolean remove(Long id) {
+        return deleteById(id);
+    }
 }

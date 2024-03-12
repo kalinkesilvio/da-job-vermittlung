@@ -39,6 +39,13 @@ public class ApplicationResource {
         )).build();
     }
 
+    @DELETE
+    @Path("/{id}")
+    @Transactional
+    public Response deleteById(@PathParam("id") Long id) {
+        return Response.ok(applicationRepository.remove(id)).build();
+    }
+
     @GET
     @Path("/getByJobOfferId/{id}")
     public Response getByJobOffer(@PathParam("id") Long id) {
