@@ -14,11 +14,11 @@ public class Action extends PanacheEntity {
     public String actionName;
 
     @JoinColumn
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     public Company company;
 
     @JoinColumn
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     public Applicant applicant;
 
     public LocalDateTime actionDate;
