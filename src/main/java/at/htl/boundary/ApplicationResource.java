@@ -47,6 +47,15 @@ public class ApplicationResource {
     }
 
     @GET
+    @Path("/getAll")
+    public Response getAll() {
+        return Response.ok(
+                applicationRepository
+                        .listAll())
+                .build();
+    }
+
+    @GET
     @Path("/getByJobOfferId/{id}")
     public Response getByJobOffer(@PathParam("id") Long id) {
         List<Application> applications = applicationRepository.findByJobOfferId(id);
