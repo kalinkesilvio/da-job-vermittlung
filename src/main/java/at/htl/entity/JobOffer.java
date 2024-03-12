@@ -15,12 +15,12 @@ public class JobOffer extends PanacheEntity {
     public String condition;
     public Double salary;
 
-    @JoinColumn(nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
-    public Company company;
-
     public JobOffer() {
     }
+
+    @JoinColumn(nullable = false)
+    @ManyToOne
+    public Company company;
 
     public JobOffer(String title, String descr, String category, String condition, Double salary, Company company) {
         this.title = title;

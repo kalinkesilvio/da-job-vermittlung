@@ -16,6 +16,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 @QuarkusTest
+@TestTransaction
 @TestHTTPEndpoint(JobOfferResource.class)
 public class JobOfferResourceRestTest {
 
@@ -182,5 +183,17 @@ public class JobOfferResourceRestTest {
                 .get("getJobOfferByCategory/{category}")
                 .then()
                 .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
+    @Test
+    @TestTransaction
+    void delete() {
+        given()
+                .pathParam("id", 10L)
+                .when()
+                .delete("/{id}")
+                .then()
+                .statusCode(200)
+                .log().everything();
     }
 }
