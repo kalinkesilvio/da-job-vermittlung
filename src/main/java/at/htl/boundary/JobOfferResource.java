@@ -88,12 +88,14 @@ public class JobOfferResource {
 
     @PUT
     @Path("update")
+    @Transactional
     public Response update(JobOffer jobOffer) {
         return Response.ok(jobOfferRepository.getEntityManager().merge(jobOffer)).build();
     }
 
     @DELETE
     @Path("{id}")
+    @Transactional
     public Response delete(@PathParam("id") Long id) {
         boolean deleted = jobOfferRepository.deleteById(id);
         if (deleted) {
