@@ -30,4 +30,8 @@ public class ApplicationRepository implements PanacheRepository<Application> {
                 .setParameter(1, id)
                 .getResultList();
     }
+
+    public Application save(Application application) {
+        return em.merge(application);
+    }
 }
