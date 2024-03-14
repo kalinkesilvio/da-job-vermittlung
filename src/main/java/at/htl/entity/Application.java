@@ -12,13 +12,11 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Application extends PanacheEntity {
 
     @JoinColumn
-    @ManyToOne(cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne
     public Applicant applicant;
 
     @JoinColumn
-    @ManyToOne(cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne
     public JobOffer jobOffer;
 
     public Application() {
