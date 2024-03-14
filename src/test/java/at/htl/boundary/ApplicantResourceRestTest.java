@@ -141,4 +141,37 @@ class ApplicantResourceRestTest {
                 .body("lastName", is(testApplicant.lastName),
                         "email", is(testApplicant.email));
     }
+
+    @Test
+    void updateById_Address() {
+
+        Applicant testApplicant = applicantRepository.getApplicantById(14L);
+        testApplicant.lastName = "Prameeeeek";
+        testApplicant.email = "pramek1231234@gmail.com";
+
+        testApplicant.address.city = "UPDATED STADT";
+        testApplicant.address.streetNo = "123 A";
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("id", testApplicant.id)
+                .body(testApplicant)
+                .when()
+                .put("/{id}")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .log().body()
+                .body("lastName", is(testApplicant.lastName),
+                        "email", is(testApplicant.email));
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("id", testApplicant.id)
+                .when()
+                .get("/{id}")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .body("lastName", is(testApplicant.lastName),
+                        "email", is(testApplicant.email));
+    }
 }
