@@ -15,6 +15,8 @@ public class JobOffer extends PanacheEntity {
     public String condition;
     public Double salary;
 
+    public Double hoursPerWeek;
+
     public JobOffer() {
     }
 
@@ -22,12 +24,13 @@ public class JobOffer extends PanacheEntity {
     @ManyToOne
     public Company company;
 
-    public JobOffer(String title, String descr, String category, String condition, Double salary, Company company) {
+    public JobOffer(String title, String descr, String category, String condition, Double salary, Double hoursPerWeek, Company company) {
         this.title = title;
         this.descr = descr;
         this.category = category;
         this.condition = condition;
         this.salary = salary;
+        this.hoursPerWeek = hoursPerWeek;
         this.company = company;
     }
 }
