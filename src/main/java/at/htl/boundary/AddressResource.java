@@ -3,9 +3,12 @@ package at.htl.boundary;
 import at.htl.controller.AddressRepository;
 import at.htl.entity.Address;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 
 import java.net.URI;
 
@@ -30,20 +33,12 @@ public class AddressResource {
     }
 
     @PUT
-    @Path("update/{id}")
-    public Response updateById(@PathParam("id") Long id, Address address) {
-        return addressRepository
-                .findByIdOptional(id)
-                .map(a -> {
-                            a.city = address.city;
-                            a.country = address.country;
-                            a.state = address.state;
-                            a.street = address.street;
-                            a.streetNo = address.streetNo;
-                            a.zipNo = address.zipNo;
-                            return Response.ok(addressRepository.saveWithReturn(a)).build();
-                        })
-                .orElse(Response.status(Response.Status.NOT_FOUND).build());
+    @Path("/update")
+    @Transactional
+    public Response update(Address address, @Context UriInfo uriInfo) {
+        return Response.created(URI.create(
+                uriInfo.getPath() + "/" + addressRepository.saveWithReturn(address).id
+        )).build();
     }
 
     @DELETE
