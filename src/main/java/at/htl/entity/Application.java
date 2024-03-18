@@ -17,6 +17,7 @@ public class Application extends PanacheEntity {
 
     @JoinColumn
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public JobOffer jobOffer;
 
     public String statusText;
