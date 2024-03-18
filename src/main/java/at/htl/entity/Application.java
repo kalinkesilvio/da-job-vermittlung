@@ -13,6 +13,7 @@ public class Application extends PanacheEntity {
 
     @JoinColumn
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Applicant applicant;
 
     @JoinColumn
