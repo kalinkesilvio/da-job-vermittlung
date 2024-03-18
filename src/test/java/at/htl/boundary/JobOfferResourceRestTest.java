@@ -4,6 +4,7 @@ import at.htl.entity.Company;
 import at.htl.entity.JobOffer;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
+import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
@@ -16,7 +17,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 @QuarkusTest
-@TestTransaction
 @TestHTTPEndpoint(JobOfferResource.class)
 public class JobOfferResourceRestTest {
 
@@ -195,5 +195,39 @@ public class JobOfferResourceRestTest {
                 .then()
                 .statusCode(200)
                 .log().everything();
+    }
+}
+
+@QuarkusTest
+class JobOfferDeleteTest {
+    @Test
+    @TestTransaction
+    void delete_reference_to_application() {
+
+        Long joboffer_id = 12L;
+
+        given()
+                .pathParam("id", joboffer_id)
+                .when()
+                .get("application/getByJobOfferId/{id}")
+                .then()
+                .log().body()
+                .statusCode(Response.Status.OK.getStatusCode());
+
+
+        given()
+                .pathParam("id", 12L)
+                .when()
+                .delete("joboffer/{id}")
+                .then()
+                .statusCode(200)
+                .log().everything();
+
+        given()
+                .pathParam("id", joboffer_id)
+                .when()
+                .get("application/getByJobOfferId/{id}")
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
     }
 }

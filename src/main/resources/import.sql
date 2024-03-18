@@ -88,6 +88,7 @@ insert into company values(
 
 
 insert into joboffer values(
+                                30,
                                2300,
                                3,
                                10,
@@ -98,6 +99,7 @@ insert into joboffer values(
                            );
 
 insert into joboffer values(
+                            25,
                                1800,
                                2,
                                11,
@@ -108,6 +110,7 @@ insert into joboffer values(
                            );
 
 insert into joboffer values(
+                            10,
                                1500,
                                2,
                                12,
@@ -118,6 +121,7 @@ insert into joboffer values(
                            );
 
 insert into joboffer values(
+                            38.5,
                                3000,
                                1,
                                13,
@@ -185,14 +189,16 @@ insert into action (id, applicant_id, company_id, actionname, actiondate) values
 
                          );
 
-insert into application values(
-                               14,
+insert into application (id, applicant_id, joboffer_id, statustext) values(
                                1,
-                               12
+                               14,
+                               12,
+                               'work in progress...'
                               );
 
-insert into application values(
-                               15,
+insert into application (id, applicant_id, joboffer_id, statustext) values(
                                2,
-                               12
+                               15,
+                               12,
+                               'seen and processed'
                               );

@@ -1,6 +1,7 @@
 package at.htl.boundary;
 
 import at.htl.controller.CompanyRepository;
+import at.htl.entity.Applicant;
 import at.htl.entity.Company;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
@@ -70,4 +71,43 @@ class CompanyResourceRestTest {
                 .body("size()", is(3));
     }
 
+    @Test
+    void update() {
+        Company companyToUpdate = companyRepository.getCompanyById(3L);
+        companyToUpdate.companyName = "UPDATE Crop 8 GmbH";
+        companyToUpdate.email = "crop8updated-office@gmail.com";
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("id", companyToUpdate.id)
+                .body(companyToUpdate)
+                .when()
+                .put("/{id}")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .log().body()
+                .body("companyName", is(companyToUpdate.companyName),
+                        "email", is(companyToUpdate.email));
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("id", companyToUpdate.id)
+                .when()
+                .get("/{id}")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .body("companyName", is(companyToUpdate.companyName),
+                        "email", is(companyToUpdate.email));
+    }
+
+    @Test
+    void delete() {
+        given()
+                .pathParam("id", 2L)
+                .when()
+                .delete("/{id}")
+                .then()
+                .statusCode(200)
+                .log().everything();
+    }
 }

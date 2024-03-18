@@ -13,17 +13,22 @@ public class Application extends PanacheEntity {
 
     @JoinColumn
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Applicant applicant;
 
     @JoinColumn
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public JobOffer jobOffer;
+
+    public String statusText;
 
     public Application() {
     }
 
-    public Application(Applicant applicant, JobOffer jobOffer) {
+    public Application(Applicant applicant, JobOffer jobOffer, String statusText) {
         this.applicant = applicant;
         this.jobOffer = jobOffer;
+        this.statusText = statusText;
     }
 }
