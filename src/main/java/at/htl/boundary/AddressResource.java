@@ -35,10 +35,8 @@ public class AddressResource {
     @PUT
     @Path("/update")
     @Transactional
-    public Response update(Address address, @Context UriInfo uriInfo) {
-        return Response.created(URI.create(
-                uriInfo.getPath() + "/" + addressRepository.saveWithReturn(address).id
-        )).build();
+    public Response update(Address address) {
+        return Response.ok(addressRepository.saveWithReturn(address)).build();
     }
 
     @DELETE
