@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  postgresql:
+    container_name: keycloak-postgres
+    image: postgres:16.2-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+      POSTGRES_DB: keycloak
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  keycloak:
+    container_name: my-keycloak
+    image: quay.io/keycloak/keycloak:24.0.1
+    restart: unless-stopped
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgresql
+      DB_PORT: 5432
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: keycloak
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgresql
+
+volumes:
+  postgres-data:
