@@ -26,8 +26,10 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
     public List<JobOffer> getJobOffersWithPartialString(String partial) {
         return findAll()
                 .stream()
-                .filter(j -> j.title.contains(partial)
-                        || j.category.contains(partial))
+                .filter(j -> j.title.toLowerCase().contains(partial.toLowerCase())
+                        || j.category.toLowerCase().contains(partial.toLowerCase())
+                        || j.company.companyName.toLowerCase().contains(partial.toLowerCase())
+                )
                 .collect(Collectors.toList());
     }
 
