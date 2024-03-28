@@ -81,7 +81,7 @@ public class JobOfferResourceRestTest {
 
     @Test
     public void getByStringPartial_1() {
-        String partial = "Koch";
+        String partial = "kell";
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -93,7 +93,24 @@ public class JobOfferResourceRestTest {
                 .body("size()", is(1))
                 .log().everything()
                 .body("get(0).category", is("Gastronomie"),
-                        "get(0).title", is("Koch an Wochenenden"));
+                        "get(0).title", is("Kellner an Wochenenden"));
+    }
+
+    @Test
+    public void getByStringPartial_companyName() {
+        String partial = "sanjis";
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .pathParam("partial", partial)
+                .when()
+                .get("/getByStringPartial/{partial}")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .log().body()
+                .body("size()", is(2))
+                .log().everything()
+                .body("get(0).company.companyName", is("Sanjis Kochstube"));
     }
 
     @Test
