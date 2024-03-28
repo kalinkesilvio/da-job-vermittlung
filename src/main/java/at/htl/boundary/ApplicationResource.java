@@ -33,10 +33,8 @@ public class ApplicationResource {
     @PUT
     @Path("/update")
     @Transactional
-    public Response update(Application application, @Context UriInfo uriInfo) {
-        return Response.created(URI.create(
-                uriInfo.getPath() + "/" + applicationRepository.save(application).id
-        )).build();
+    public Response update(Application application) {
+        return Response.ok(applicationRepository.save(application)).build();
     }
 
     @DELETE

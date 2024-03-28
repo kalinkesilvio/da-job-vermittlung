@@ -36,10 +36,8 @@ public class ApplicantResource {
     @PUT
     @Transactional
     @Path("/update")
-    public Response update(Applicant applicant, @Context UriInfo uriInfo) {
-        return Response.created(URI.create(
-                uriInfo.getPath() + "/" + applicantRepository.save(applicant).id
-        )).build();
+    public Response update(Applicant applicant) {
+        return Response.ok(applicantRepository.save(applicant)).build();
     }
 
     @GET

@@ -32,10 +32,8 @@ public class CompanyResource {
     @PUT
     @Transactional
     @Path("/update")
-    public Response update(Company company, @Context UriInfo uriInfo) {
-        return Response.created(URI.create(
-                uriInfo.getPath() + "/" + companyRepository.save(company).id
-        )).build();
+    public Response update(Company company) {
+        return Response.ok(companyRepository.save(company)).build();
     }
 
     @PUT
