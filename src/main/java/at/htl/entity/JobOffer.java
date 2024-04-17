@@ -5,6 +5,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class JobOffer extends PanacheEntity {
@@ -22,6 +24,7 @@ public class JobOffer extends PanacheEntity {
 
     @JoinColumn(nullable = false)
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Company company;
 
     public JobOffer(String title, String descr, String category, String condition, Double salary, Double hoursPerWeek, Company company) {

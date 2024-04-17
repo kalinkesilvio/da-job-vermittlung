@@ -5,6 +5,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -15,10 +17,12 @@ public class Action extends PanacheEntity {
 
     @JoinColumn
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Company company;
 
     @JoinColumn
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Applicant applicant;
 
     public LocalDateTime actionDate;

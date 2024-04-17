@@ -17,7 +17,7 @@ public class Company extends PanacheEntity {
     public String imageUrl;
 
     @JoinColumn
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     public Address address;
 
     public Company() {
