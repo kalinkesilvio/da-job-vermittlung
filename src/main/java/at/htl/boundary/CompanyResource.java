@@ -24,7 +24,7 @@ public class CompanyResource {
     public Response create(Company company) {
         Company savedCompany = companyRepository.save(company);
         if (savedCompany != null) {
-            return Response.created(URI.create("company/" + savedCompany.id)).build();
+            return Response.ok(savedCompany).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }

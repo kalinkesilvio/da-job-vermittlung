@@ -1,12 +1,16 @@
 package at.htl.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 
 @Entity
-public class Applicant extends PanacheEntity{
+public class Applicant extends PanacheEntityBase {
 
     //public static DateTimeFormatter CUSTOM_DATE = DateTimeFormatter.ISO_LOCAL_DATE;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     public String firstName;
     public String lastName;
@@ -45,8 +49,7 @@ public class Applicant extends PanacheEntity{
         this.password = password;
     }
 
-    public Applicant(Long id, String firstName, String lastName, String email, String password, String resumeUrl, String descr, String skillDescr, String interestDescr, String jobField, String jobBranche, String preferableWork, int hoursPerWeek, boolean commute, String imageUrl, Address address) {
-        this.id = id;
+    public Applicant(String firstName, String lastName, String email, String password, String resumeUrl, String descr, String skillDescr, String interestDescr, String jobField, String jobBranche, String preferableWork, int hoursPerWeek, boolean commute, String imageUrl, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -63,5 +66,13 @@ public class Applicant extends PanacheEntity{
         this.commute = commute;
         this.imageUrl = imageUrl;
         this.address = address;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

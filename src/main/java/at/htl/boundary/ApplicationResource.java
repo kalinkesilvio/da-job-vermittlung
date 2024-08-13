@@ -25,9 +25,9 @@ public class ApplicationResource {
     public Response create(Application application) {
         Application application1 = applicationRepository.save(application);
         if (application1 != null) {
-            return Response.created(URI.create("application/" + application1.id)).build();
+            return Response.ok(application1).build();
         }
-        return Response.noContent().build();
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 
     @PUT

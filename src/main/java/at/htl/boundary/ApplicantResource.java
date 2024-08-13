@@ -28,7 +28,7 @@ public class ApplicantResource {
     public Response create(Applicant applicant) {
         Applicant savedApplicant = applicantRepository.save(applicant);
         if (savedApplicant != null) {
-            return Response.created(URI.create("applicant/" + savedApplicant.id)).build();
+            return Response.ok(savedApplicant).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }

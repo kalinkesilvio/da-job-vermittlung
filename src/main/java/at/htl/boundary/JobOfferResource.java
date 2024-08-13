@@ -24,7 +24,7 @@ public class JobOfferResource {
     public Response create(JobOffer jobOffer) {
         JobOffer jobOffer1 = jobOfferRepository.save(jobOffer);
         if (jobOffer1 != null) {
-            return Response.created(URI.create("joboffer/" + jobOffer1.id)).build();
+            return Response.ok(jobOffer1).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }

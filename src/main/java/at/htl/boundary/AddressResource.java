@@ -28,8 +28,11 @@ public class AddressResource {
     @POST
     @Path("/")
     public Response create(Address address) {
-        addressRepository.save(address);
-        return Response.created(URI.create("address/" + address.id)).build();
+        Address address1 = addressRepository.save(address);
+        if (address1 != null) {
+            return Response.ok(address1).build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     @PUT

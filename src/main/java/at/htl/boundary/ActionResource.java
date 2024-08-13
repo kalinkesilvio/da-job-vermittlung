@@ -19,10 +19,11 @@ public class ActionResource {
     @POST
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response create(Action action) {
         Action savedAction = actionRepository.save(action);
         if (savedAction != null) {
-            return Response.created(URI.create("action/" + savedAction.id)).build();
+            return Response.ok(savedAction).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
