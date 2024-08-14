@@ -6,13 +6,9 @@ import io.quarkus.test.InjectMock;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.persistence.Entity;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatcher;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -36,9 +32,9 @@ class CompanyResourceTest {
     @BeforeEach
     void setUp() {
         this.company1 = new Company();
-        company1.companyName = "CP GmbH";
-        company1.branche = "Heiztechnik";
-        company1.id = 1L;
+        company1.setCompanyName("CP GmbH");
+        company1.setBranche("Heiztechnik");
+        company1.setId(1L);
     }
 
     @Test
@@ -81,7 +77,7 @@ class CompanyResourceTest {
 
         List<Company> entity = (List<Company>) response.getEntity();
 
-        assertEquals(1L, entity.get(0).id);
+        assertEquals(1L, entity.get(0).getId());
     }
 
 }

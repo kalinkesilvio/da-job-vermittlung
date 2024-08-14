@@ -1,7 +1,6 @@
 package at.htl.boundary;
 
 import at.htl.controller.ApplicantRepository;
-import at.htl.entity.Address;
 import at.htl.entity.Applicant;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
@@ -9,7 +8,6 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
@@ -29,16 +27,16 @@ class ApplicantResourceRestTest {
     @BeforeEach
     void setUp() {
         this.applicant = new Applicant();
-        applicant.jobBranche = "Medientechnik";
-        applicant.firstName = "John";
-        applicant.skillDescr = "handy with camera stuff";
-        applicant.id = 1L;
+        applicant.setJobBranche("Medientechnik");
+        applicant.setFirstName("John");
+        applicant.setSkillDescr("handy with camera stuff");
+        applicant.setId(1L);
 
         this.applicant2 = new Applicant();
-        applicant2.jobBranche = "Informatik";
-        applicant2.firstName = "Max";
-        applicant2.skillDescr = "skilled with SQL Queries";
-        applicant2.id = 2L;
+        applicant2.setJobBranche("Informatik");
+        applicant2.setFirstName("Max");
+        applicant2.setSkillDescr("skilled with SQL Queries");
+        applicant2.setId(2L);
     }
 
     @Test
@@ -116,62 +114,62 @@ class ApplicantResourceRestTest {
     void updateById() {
 
         Applicant testApplicant = applicantRepository.getApplicantById(14L);
-        testApplicant.lastName = "Prameeeeek";
-        testApplicant.email = "pramek1231234@gmail.com";
+        testApplicant.setLastName("Prameeeeek");
+        testApplicant.setEmail("pramek1231234@gmail.com");
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .pathParam("id", testApplicant.id)
+                .pathParam("id", testApplicant.getId())
                 .body(testApplicant)
                 .when()
                 .put("/{id}")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
                 .log().body()
-                .body("lastName", is(testApplicant.lastName),
-                        "email", is(testApplicant.email));
+                .body("lastName", is(testApplicant.getLastName()),
+                        "email", is(testApplicant.getEmail()));
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .pathParam("id", testApplicant.id)
+                .pathParam("id", testApplicant.getId())
                 .when()
                 .get("/{id}")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
-                .body("lastName", is(testApplicant.lastName),
-                        "email", is(testApplicant.email));
+                .body("lastName", is(testApplicant.getLastName()),
+                        "email", is(testApplicant.getEmail()));
     }
 
     @Test
     void updateById_Address() {
 
         Applicant testApplicant = applicantRepository.getApplicantById(14L);
-        testApplicant.lastName = "Prameeeeek";
-        testApplicant.email = "pramek1231234@gmail.com";
+        testApplicant.setLastName("Prameeeeek");
+        testApplicant.setEmail("pramek1231234@gmail.com");
 
-        testApplicant.address.city = "UPDATED STADT";
-        testApplicant.address.streetNo = "123 A";
+        testApplicant.getAddress().setCity("UPDATED STADT");
+        testApplicant.getAddress().setStreetNo("123 A");
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .pathParam("id", testApplicant.id)
+                .pathParam("id", testApplicant.getId())
                 .body(testApplicant)
                 .when()
                 .put("/{id}")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
                 .log().body()
-                .body("lastName", is(testApplicant.lastName),
-                        "email", is(testApplicant.email));
+                .body("lastName", is(testApplicant.getLastName()),
+                        "email", is(testApplicant.getEmail()));
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .pathParam("id", testApplicant.id)
+                .pathParam("id", testApplicant.getId())
                 .when()
                 .get("/{id}")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
-                .body("lastName", is(testApplicant.lastName),
-                        "email", is(testApplicant.email));
+                .body("lastName", is(testApplicant.getLastName()),
+                        "email", is(testApplicant.getEmail()));
     }
 }

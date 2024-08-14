@@ -1,7 +1,6 @@
 package at.htl.controller;
 
 import at.htl.entity.Applicant;
-import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -22,9 +21,9 @@ class ApplicantRepositoryTest {
 
         assertNotNull(applicants);
         assertFalse(applicants.isEmpty());
-        assertEquals(15L, applicants.get(0).id);
-        assertEquals("Mediendesign", applicants.get(0).jobBranche);
-        assertEquals("Georg", applicants.get(0).firstName);
+        assertEquals(15L, applicants.get(0).getId());
+        assertEquals("Mediendesign", applicants.get(0).getJobBranche());
+        assertEquals("Georg", applicants.get(0).getFirstName());
     }
 
     @Test

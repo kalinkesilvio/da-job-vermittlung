@@ -1,7 +1,6 @@
 package at.htl.boundary;
 
 import at.htl.controller.CompanyRepository;
-import at.htl.entity.Applicant;
 import at.htl.entity.Company;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
@@ -28,9 +27,9 @@ class CompanyResourceRestTest {
     @BeforeEach
     void setUp() {
         this.company1 = new Company();
-        company1.companyName = "CP GmbH";
-        company1.branche = "Heiztechnik";
-        company1.id = 2L;
+        company1.setCompanyName("CP GmbH");
+        company1.setBranche("Heiztechnik");
+        company1.setId(2L);
     }
     @Test
 //    @Order(99)
@@ -74,30 +73,30 @@ class CompanyResourceRestTest {
     @Test
     void update() {
         Company companyToUpdate = companyRepository.getCompanyById(3L);
-        companyToUpdate.companyName = "UPDATE Crop 8 GmbH";
-        companyToUpdate.email = "crop8updated-office@gmail.com";
+        companyToUpdate.setCompanyName("UPDATE Crop 8 GmbH");
+        companyToUpdate.setEmail("crop8updated-office@gmail.com");
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .pathParam("id", companyToUpdate.id)
+                .pathParam("id", companyToUpdate.getId())
                 .body(companyToUpdate)
                 .when()
                 .put("/{id}")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
                 .log().body()
-                .body("companyName", is(companyToUpdate.companyName),
-                        "email", is(companyToUpdate.email));
+                .body("companyName", is(companyToUpdate.getCompanyName()),
+                        "email", is(companyToUpdate.getEmail()));
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .pathParam("id", companyToUpdate.id)
+                .pathParam("id", companyToUpdate.getId())
                 .when()
                 .get("/{id}")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
-                .body("companyName", is(companyToUpdate.companyName),
-                        "email", is(companyToUpdate.email));
+                .body("companyName", is(companyToUpdate.getCompanyName()),
+                        "email", is(companyToUpdate.getEmail()));
     }
 
     @Test

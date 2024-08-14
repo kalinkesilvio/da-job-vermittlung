@@ -172,16 +172,16 @@ insert into applicant --(id, firstname, lastname, jobbranche)
                                 'Autodidakt'
                          );
 
-insert into action (id, applicant_id, company_id, actionname, actiondate) values(
-                              100,
+insert into action (applicant_id, company_id, actionname, actiondate) values(
+--                              100,
                               14,
                               2,
                               'favorable',
                             '2023-12-03 15:06:24'
                          );
 
-insert into action (id, applicant_id, company_id, actionname, actiondate) values(
-                              101,
+insert into action (applicant_id, company_id, actionname, actiondate) values(
+--                              101,
                               14,
                               2,
                               'like',
@@ -189,15 +189,15 @@ insert into action (id, applicant_id, company_id, actionname, actiondate) values
 
                          );
 
-insert into application (id, applicant_id, joboffer_id, statustext) values(
-                               1,
+insert into application (applicant_id, joboffer_id, statustext) values(
+--                               1,
                                14,
                                12,
                                'work in progress...'
                               );
 
-insert into application (id, applicant_id, joboffer_id, statustext) values(
-                               2,
+insert into application (applicant_id, joboffer_id, statustext) values(
+--                                2,
                                15,
                                12,
                                'seen and processed'

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 @TestHTTPEndpoint(AddressResource.class)
@@ -55,26 +54,27 @@ class AddressResourceRestTest {
                 "updatedTestland",
                 "Teststaat"
         );
-        testUpdateAddress.id = 5L;
+        testUpdateAddress.setId(5L);
+
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .pathParam("id", testUpdateAddress.id)
+                .pathParam("id", testUpdateAddress.getId())
                 .body(testUpdateAddress)
                 .when()
                 .put("/update/{id}")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
-                .body("street", is(testUpdateAddress.street));
+                .body("street", is(testUpdateAddress.getStreet()));
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .pathParam("id", testUpdateAddress.id)
+                .pathParam("id", testUpdateAddress.getId())
                 .when()
                 .get("/{id}")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
-                .body("street", is(testUpdateAddress.street));
+                .body("street", is(testUpdateAddress.getStreet()));
     }
 
     @Test

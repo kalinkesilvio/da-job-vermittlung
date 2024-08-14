@@ -2,12 +2,10 @@ package at.htl.controller;
 
 import at.htl.entity.Address;
 import at.htl.entity.Applicant;
-import at.htl.entity.Application;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -41,14 +39,14 @@ public class ApplicantRepository implements PanacheRepository<Applicant> {
     @Transactional
     public Applicant addAddress(Long id, Address newAddress) {
         Applicant applicant = findById(id);
-        applicant.address = newAddress;
+        applicant.setAddress(newAddress);
         return this.save(applicant);
     }
 
     public List<Applicant> getByBranche(String branche) {
         return findAll()
                 .stream()
-                .filter(a -> a.jobBranche.equalsIgnoreCase(branche))
+                .filter(a -> a.getJobBranche().equalsIgnoreCase(branche))
                 .collect(Collectors.toList());
     }
 }

@@ -3,6 +3,7 @@ package at.htl.boundary;
 import at.htl.controller.ActionRepository;
 import at.htl.entity.Action;
 import jakarta.inject.Inject;
+import jakarta.transaction.TransactionScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

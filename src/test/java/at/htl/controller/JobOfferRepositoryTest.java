@@ -26,10 +26,10 @@ class JobOfferRepositoryTest {
 
         assertFalse(jobOffers.isEmpty());
         assertThat(jobOffers.size(), is(2));
-        assertEquals("Gastronomie", jobOffers.get(0).category);
-        assertEquals("Gastronomie", jobOffers.get(1).category);
-        assertEquals("Koch an Wochenenden", jobOffers.get(0).title);
-        assertEquals("Kellner an Wochenenden", jobOffers.get(1).title);
+        assertEquals("Gastronomie", jobOffers.get(0).getCategory());
+        assertEquals("Gastronomie", jobOffers.get(1).getCategory());
+        assertEquals("Koch an Wochenenden", jobOffers.get(0).getTitle());
+        assertEquals("Kellner an Wochenenden", jobOffers.get(1).getTitle());
     }
 
     @Test

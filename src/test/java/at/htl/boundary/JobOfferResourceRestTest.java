@@ -4,12 +4,10 @@ import at.htl.entity.Company;
 import at.htl.entity.JobOffer;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
-import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -33,17 +31,17 @@ public class JobOfferResourceRestTest {
     public void create() {
 
         JobOffer jobOffer1 = new JobOffer();
-        jobOffer1.category = "Solartechnik";
-        jobOffer1.salary = 3500.00;
-        jobOffer1.condition = "Bachelor Solartechnik & Energieerhaltung";
-        jobOffer1.title = "End-Testing für Solartechnik";
+        jobOffer1.setCategory("Solartechnik");
+        jobOffer1.setSalary(3500.00);
+        jobOffer1.setCondition("Bachelor Solartechnik & Energieerhaltung");
+        jobOffer1.setTitle("End-Testing für Solartechnik");
 
         Company testCompany = new Company();
-        testCompany.companyName = "Kuckuruz";
-        testCompany.branche = "Gastwirtschaft";
-        testCompany.email = "kukcuruz@office.gmail.com";
+        testCompany.setCompanyName("Kuckuruz");
+        testCompany.setBranche("Gastwirtschaft");
+        testCompany.setEmail("kukcuruz@office.gmail.com");
 
-        jobOffer1.company = (Company) companyResource.getById(1L).getEntity();
+        jobOffer1.setCompany((Company) companyResource.getById(1L).getEntity());
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)

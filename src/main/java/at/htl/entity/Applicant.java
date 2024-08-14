@@ -1,6 +1,5 @@
 package at.htl.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 
@@ -12,60 +11,60 @@ public class Applicant extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public String firstName;
-    public String lastName;
+    private String firstName;
+    private String lastName;
 
-    public String email;
+    private String email;
 
-    public String password;
+    private String password;
 
     @Column(length = 10485768)
-    public String resumeUrl;
-    public String descr;
-    public String skillDescr;
-    public String interestDescr;
-    public String jobField;
-    public String jobBranche;
-    public String preferableWork;
+    private String resumeUrl;
+    private String descr;
+    private String skillDescr;
+    private String interestDescr;
+    private String jobField;
+    private String jobBranche;
+    private String preferableWork;
 
     //@JsonbDateFormat("dd-MM-yyyy")
     //public LocalDateTime retirement;
 
-    public int hoursPerWeek;
-    public boolean commute;
+    private int hoursPerWeek;
+    private boolean commute;
 
     @Column(length = 10485768)
-    public String imageUrl;
+    private String imageUrl;
 
     @JoinColumn
     @ManyToOne
-    public Address address;
+    private Address address;
 
     public Applicant() {
     }
 
     public Applicant(String email, String password) {
-        this.email = email;
-        this.password = password;
+        this.setEmail(email);
+        this.setPassword(password);
     }
 
     public Applicant(String firstName, String lastName, String email, String password, String resumeUrl, String descr, String skillDescr, String interestDescr, String jobField, String jobBranche, String preferableWork, int hoursPerWeek, boolean commute, String imageUrl, Address address) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.resumeUrl = resumeUrl;
-        this.descr = descr;
-        this.skillDescr = skillDescr;
-        this.interestDescr = interestDescr;
-        this.jobField = jobField;
-        this.jobBranche = jobBranche;
-        this.preferableWork = preferableWork;
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
+        this.setEmail(email);
+        this.setPassword(password);
+        this.setResumeUrl(resumeUrl);
+        this.setDescr(descr);
+        this.setSkillDescr(skillDescr);
+        this.setInterestDescr(interestDescr);
+        this.setJobField(jobField);
+        this.setJobBranche(jobBranche);
+        this.setPreferableWork(preferableWork);
         //this.retirement = LocalDateTime.parse(retirement, CUSTOM_DATE);
-        this.hoursPerWeek = hoursPerWeek;
-        this.commute = commute;
-        this.imageUrl = imageUrl;
-        this.address = address;
+        this.setHoursPerWeek(hoursPerWeek);
+        this.setCommute(commute);
+        this.setImageUrl(imageUrl);
+        this.setAddress(address);
     }
 
     public void setId(Long id) {
@@ -74,5 +73,125 @@ public class Applicant extends PanacheEntityBase {
 
     public Long getId() {
         return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getResumeUrl() {
+        return resumeUrl;
+    }
+
+    public void setResumeUrl(String resumeUrl) {
+        this.resumeUrl = resumeUrl;
+    }
+
+    public String getDescr() {
+        return descr;
+    }
+
+    public void setDescr(String descr) {
+        this.descr = descr;
+    }
+
+    public String getSkillDescr() {
+        return skillDescr;
+    }
+
+    public void setSkillDescr(String skillDescr) {
+        this.skillDescr = skillDescr;
+    }
+
+    public String getInterestDescr() {
+        return interestDescr;
+    }
+
+    public void setInterestDescr(String interestDescr) {
+        this.interestDescr = interestDescr;
+    }
+
+    public String getJobField() {
+        return jobField;
+    }
+
+    public void setJobField(String jobField) {
+        this.jobField = jobField;
+    }
+
+    public String getJobBranche() {
+        return jobBranche;
+    }
+
+    public void setJobBranche(String jobBranche) {
+        this.jobBranche = jobBranche;
+    }
+
+    public String getPreferableWork() {
+        return preferableWork;
+    }
+
+    public void setPreferableWork(String preferableWork) {
+        this.preferableWork = preferableWork;
+    }
+
+    public int getHoursPerWeek() {
+        return hoursPerWeek;
+    }
+
+    public void setHoursPerWeek(int hoursPerWeek) {
+        this.hoursPerWeek = hoursPerWeek;
+    }
+
+    public boolean isCommute() {
+        return commute;
+    }
+
+    public void setCommute(boolean commute) {
+        this.commute = commute;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

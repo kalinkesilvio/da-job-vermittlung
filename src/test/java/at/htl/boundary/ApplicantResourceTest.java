@@ -2,24 +2,15 @@ package at.htl.boundary;
 
 import at.htl.controller.ApplicantRepository;
 import at.htl.entity.Applicant;
-import at.htl.entity.Company;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.test.InjectMock;
-import io.quarkus.test.Mock;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.UriInfo;
 import org.junit.jupiter.api.*;
-import org.mockito.ArgumentMatcher;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,16 +35,16 @@ class ApplicantResourceTest {
     @BeforeEach
     void setUp() {
         this.applicant = new Applicant();
-        applicant.jobBranche = "Medientechnik";
-        applicant.firstName = "John";
-        applicant.skillDescr = "handy with camera stuff";
-        applicant.id = 1L;
+        applicant.setJobBranche("Medientechnik");
+        applicant.setFirstName("John");
+        applicant.setSkillDescr("handy with camera stuff");
+        applicant.setId(1L);
 
         this.applicant2 = new Applicant();
-        applicant2.jobBranche = "Informatik";
-        applicant2.firstName = "Max";
-        applicant2.skillDescr = "skilled with SQL Queries";
-        applicant2.id = 2L;
+        applicant2.setJobBranche("Informatik");
+        applicant2.setFirstName("Max");
+        applicant2.setSkillDescr("skilled with SQL Queries");
+        applicant2.setId(2L);
     }
 
     @Test
@@ -69,9 +60,9 @@ class ApplicantResourceTest {
 
         Applicant entity = (Applicant) response.getEntity();
 
-        assertEquals(1L, entity.id);
-        assertEquals("John", entity.firstName);
-        assertEquals("Medientechnik", entity.jobBranche);
+        assertEquals(1L, entity.getId());
+        assertEquals("John", entity.getFirstName());
+        assertEquals("Medientechnik", entity.getJobBranche());
     }
 
     @Test
@@ -101,7 +92,7 @@ class ApplicantResourceTest {
         List<Applicant> entity = (List<Applicant>) response.getEntity();
 
         assertFalse(entity.isEmpty());
-        assertEquals(1L, entity.get(0).id);
+        assertEquals(1L, entity.get(0).getId());
     }
 
     @Test
@@ -123,18 +114,17 @@ class ApplicantResourceTest {
     void createApplicantMockNotOK() {
 
         Applicant newApplicant = new Applicant(
-                null,
                 "Richard",
                 "Schlaumeier",
                 "bob.schlaumeier@gmail.com",
                 "TESTPASSWORT123",
                 null,
                 "jahrelange Erfahrung in Firma Soo gesammelt",
+                "Führung in der Werkstatt",
                 "Tischlerei Meister",
                 "Firma mit guter technischer Ausstattung",
                 "Tischler",
                 "Holzverarbeitung",
-                "Führung in der Werkstatt",
                 38,
                 true,
                 null,

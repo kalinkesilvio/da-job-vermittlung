@@ -1,7 +1,5 @@
 package at.htl.controller;
 
-import at.htl.entity.Address;
-import at.htl.entity.Applicant;
 import at.htl.entity.Company;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -35,7 +33,7 @@ public class CompanyRepository implements PanacheRepository<Company> {
     @Transactional
     public Company addAddressById(Long companyId, Long addressId) {
         Company company = findById(companyId);
-        company.address = addressRepository.findById(addressId);
+        company.setAddress(addressRepository.findById(addressId));
         return this.save(company);
     }
 }

@@ -2,7 +2,6 @@ package at.htl.boundary;
 
 import at.htl.controller.CompanyRepository;
 import at.htl.controller.JobOfferRepository;
-import at.htl.entity.Applicant;
 import at.htl.entity.Company;
 import at.htl.entity.JobOffer;
 import io.quarkus.test.InjectMock;
@@ -37,17 +36,17 @@ class JobOfferResourceTest {
     @BeforeEach
     void setUp() {
         this.jobOffer = new JobOffer();
-        this.jobOffer.id = 1L;
-        this.jobOffer.category = "Gastwirtschaft";
-        this.jobOffer.condition = "flexible Arbeitsstunden";
-        this.jobOffer.salary = 2000.00;
-        this.jobOffer.title = "Kellner*in";
+        this.jobOffer.setId(1L);
+        this.jobOffer.setCategory("Gastwirtschaft");
+        this.jobOffer.setCondition("flexible Arbeitsstunden");
+        this.jobOffer.setSalary(2000.00);
+        this.jobOffer.setTitle("Kellner*in");
 
         this.testCompany = new Company();
-        this.testCompany.id = 30L;
-        this.testCompany.companyName = "Kuckuruz";
-        this.testCompany.branche = "Gastwirtschaft";
-        this.testCompany.email = "kukcuruz@office.gmail.com";
+        this.testCompany.setId(30L);
+        this.testCompany.setCompanyName("Kuckuruz");
+        this.testCompany.setBranche("Gastwirtschaft");
+        this.testCompany.setEmail("kukcuruz@office.gmail.com");
     }
 
     @Test
@@ -55,7 +54,7 @@ class JobOfferResourceTest {
         Mockito.when(companyRepository.getCompanyById(30L)).thenReturn(testCompany);
         Mockito.when(jobOfferRepository.save(jobOffer)).thenReturn(jobOffer);
 
-        jobOffer.company = testCompany;
+        jobOffer.setCompany(testCompany);
 
         Response response = jobOfferResource.create(jobOffer);
 
@@ -79,8 +78,8 @@ class JobOfferResourceTest {
         List<JobOffer> entity = (List<JobOffer>) response.getEntity();
 
         assertFalse(entity.isEmpty());
-        assertEquals(1L, entity.get(0).id);
-        assertEquals("Kellner*in", entity.get(0).title);
+        assertEquals(1L, entity.get(0).getId());
+        assertEquals("Kellner*in", entity.get(0).getTitle());
     }
 
     @Test
@@ -91,8 +90,8 @@ class JobOfferResourceTest {
         JobOffer jobOfferFromResponse = (JobOffer) response.getEntity();
 
         assertTrue(response.hasEntity());
-        assertEquals(1L, jobOfferFromResponse.id);
-        assertEquals("Kellner*in", jobOfferFromResponse.title);
+        assertEquals(1L, jobOfferFromResponse.getId());
+        assertEquals("Kellner*in", jobOfferFromResponse.getTitle());
     }
 
     @Test
@@ -107,8 +106,8 @@ class JobOfferResourceTest {
         List<JobOffer> jobOffersResponse = (List<JobOffer>) response.getEntity();
 
         assertTrue(response.hasEntity());
-        assertEquals(1L, jobOffersResponse.get(0).id);
-        assertEquals("Kellner*in", jobOffersResponse.get(0).title);
+        assertEquals(1L, jobOffersResponse.get(0).getId());
+        assertEquals("Kellner*in", jobOffersResponse.get(0).getTitle());
     }
     @Test
     void getJobOffersByStringPartial_NOT_FOUND() {

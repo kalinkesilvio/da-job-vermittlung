@@ -1,39 +1,80 @@
 package at.htl.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
 @Entity
-public class Action extends PanacheEntity {
+public class Action extends PanacheEntityBase {
 
-    public String actionName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String actionName;
 
     @JoinColumn
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    public Company company;
+    private Company company;
 
     @JoinColumn
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    public Applicant applicant;
+    private Applicant applicant;
 
-    public LocalDateTime actionDate;
+    private LocalDateTime actionDate;
 
     public Action() {
     }
 
     public Action(String actionName, Company company, Applicant applicant, LocalDateTime actionDate) {
+        this.setActionName(actionName);
+        this.setCompany(company);
+        this.setApplicant(applicant);
+        this.setActionDate(actionDate);
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getActionName() {
+        return actionName;
+    }
+
+    public void setActionName(String actionName) {
         this.actionName = actionName;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Applicant getApplicant() {
+        return applicant;
+    }
+
+    public void setApplicant(Applicant applicant) {
         this.applicant = applicant;
+    }
+
+    public LocalDateTime getActionDate() {
+        return actionDate;
+    }
+
+    public void setActionDate(LocalDateTime actionDate) {
         this.actionDate = actionDate;
     }
 

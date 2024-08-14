@@ -5,7 +5,6 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,9 +25,9 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
     public List<JobOffer> getJobOffersWithPartialString(String partial) {
         return findAll()
                 .stream()
-                .filter(j -> j.title.toLowerCase().contains(partial.toLowerCase())
-                        || j.category.toLowerCase().contains(partial.toLowerCase())
-                        || j.company.companyName.toLowerCase().contains(partial.toLowerCase())
+                .filter(j -> j.getTitle().toLowerCase().contains(partial.toLowerCase())
+                        || j.getCategory().toLowerCase().contains(partial.toLowerCase())
+                        || j.getCompany().getCompanyName().toLowerCase().contains(partial.toLowerCase())
                 )
                 .collect(Collectors.toList());
     }
@@ -39,7 +38,7 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
 
         List<Long> ids = findAll()
                 .stream()
-                .map(jo -> jo.id)
+                .map(JobOffer::getId)
                 .toList();
 
         if (ids.size() < quantity) {
