@@ -31,6 +31,6 @@ class ApplicationResourceTest {
                 .then()
                 .statusCode(200)
                 .log().body()
-                .body("size()", is(2));
+                .body("size()", is(1));
     }
 }

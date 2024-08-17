@@ -44,7 +44,7 @@ public class ApplicantRepository implements PanacheRepository<Applicant> {
         return this.save(applicant);
     }
 
-    public List<Applicant> getByBranche(String jobField) {
+    public List<Applicant> getByJobField(String jobField) {
         return findAll()
                 .stream()
                 .filter(a -> Optional.ofNullable(a.getJobField()).isPresent())

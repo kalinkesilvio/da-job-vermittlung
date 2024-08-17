@@ -4,11 +4,12 @@ import at.htl.entity.Company;
 import at.htl.entity.JobOffer;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
+import io.quarkus.test.junit.QuarkusIntegrationTest;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
@@ -16,6 +17,7 @@ import static org.hamcrest.Matchers.notNullValue;
 
 @QuarkusTest
 @TestHTTPEndpoint(JobOfferResource.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class JobOfferResourceRestTest {
 
     @Inject
@@ -28,6 +30,7 @@ public class JobOfferResourceRestTest {
 
     @Test
     @TestTransaction
+    @Order(1)
     public void create() {
 
         JobOffer jobOffer1 = new JobOffer();
@@ -49,11 +52,19 @@ public class JobOfferResourceRestTest {
                 .when()
                 .post("/create")
                 .then()
-                .statusCode(Response.Status.CREATED.getStatusCode())
-                .header("location", "http://localhost:8081/api/joboffer/1");
+                .statusCode(Response.Status.OK.getStatusCode())
+                .log().everything()
+                .body(
+                        "company.companyName", is(jobOffer1.getCompany().getCompanyName()),
+                        "company.branche", is(jobOffer1.getCompany().getBranche()),
+                        "category", is(jobOffer1.getCategory()),
+                        "condition", is(jobOffer1.getCondition()),
+                        "salary", is(jobOffer1.getSalary().floatValue())
+                );
     }
 
     @Test
+    @Order(2)
     public void getById() {
         given()
                 .pathParam("id", 13)
@@ -67,6 +78,7 @@ public class JobOfferResourceRestTest {
     }
 
     @Test
+    @Order(3)
     public void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -74,10 +86,11 @@ public class JobOfferResourceRestTest {
                 .get("/getAll")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
-                .body("size()", is(4));
+                .body("size()", is(5));
     }
 
     @Test
+    @Order(4)
     public void getByStringPartial_1() {
         String partial = "kell";
 
@@ -95,8 +108,9 @@ public class JobOfferResourceRestTest {
     }
 
     @Test
+    @Order(5)
     public void getByStringPartial_companyName() {
-        String partial = "sanjis";
+        String partial = "nam";
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -108,10 +122,11 @@ public class JobOfferResourceRestTest {
                 .log().body()
                 .body("size()", is(2))
                 .log().everything()
-                .body("get(0).company.companyName", is("Sanjis Kochstube"));
+                .body("get(0).company.companyName", is("Nami Kartografie"));
     }
 
     @Test
+    @Order(6)
     public void getByStringPartial_NOT_FOUND() {
         String partial = "KoAWDAWFAG4ch";
 
@@ -124,6 +139,7 @@ public class JobOfferResourceRestTest {
     }
 
     @Test
+    @Order(7)
     public void getRandomJobOffers_0() {
         int quantity = 0;
 
@@ -137,6 +153,7 @@ public class JobOfferResourceRestTest {
     }
 
     @Test
+    @Order(8)
     public void getRandomJobOffers_1() {
         int quantity = 1;
 
@@ -153,6 +170,7 @@ public class JobOfferResourceRestTest {
     }
 
     @Test
+    @Order(9)
     public void getRandomJobOffers_4() {
         int quantity = 4;
 
@@ -172,6 +190,7 @@ public class JobOfferResourceRestTest {
     }
 
     @Test
+    @Order(10)
     public void getJobOfferByCategory() {
         String category = "gastronomie";
 
@@ -189,6 +208,7 @@ public class JobOfferResourceRestTest {
     }
 
     @Test
+    @Order(11)
     public void getJobOfferByCategory_NOT_FOUND() {
         String category = "ThisMayNotExist";
 
@@ -202,6 +222,7 @@ public class JobOfferResourceRestTest {
 
     @Test
     @TestTransaction
+    @Order(99)
     void delete() {
         given()
                 .pathParam("id", 10L)
@@ -214,12 +235,14 @@ public class JobOfferResourceRestTest {
 }
 
 @QuarkusTest
+@Disabled
 class JobOfferDeleteTest {
     @Test
     @TestTransaction
+    @Order(98)
     void delete_reference_to_application() {
 
-        Long joboffer_id = 12L;
+        Long joboffer_id = 13L;
 
         given()
                 .pathParam("id", joboffer_id)

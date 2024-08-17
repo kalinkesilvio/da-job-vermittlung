@@ -75,6 +75,6 @@ public class ApplicantResource {
     @Path("getAllByBranche/{jobField}")
     @Consumes(MediaType.TEXT_PLAIN)
     public Response getAllByBranche(@PathParam("jobField") String jobField) {
-        return Response.ok(applicantRepository.getByBranche(jobField)).build();
+        return Response.ok(applicantRepository.getByJobField(jobField)).build();
     }
 }

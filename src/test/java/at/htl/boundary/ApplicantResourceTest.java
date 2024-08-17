@@ -105,8 +105,8 @@ class ApplicantResourceTest {
         Response response = applicantResource.create(applicant2);
 
         assertNotNull(response);
-        assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
-        assertNotNull(response.getLocation());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertNotNull(response.getEntity());
 
     }
 

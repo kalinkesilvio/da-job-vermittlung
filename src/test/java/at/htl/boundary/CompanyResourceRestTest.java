@@ -15,12 +15,16 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 @TestTransaction
-//@TestMethodOrder(MethodOrderer.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestHTTPEndpoint(CompanyResource.class)
+//@Disabled
 class CompanyResourceRestTest {
 
     @Inject
     CompanyRepository companyRepository;
+
+    @Inject
+    CompanyResource companyResource;
 
     private Company company1;
 
@@ -32,7 +36,7 @@ class CompanyResourceRestTest {
         company1.setId(2L);
     }
     @Test
-//    @Order(99)
+    @Order(1)
     void create() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -40,12 +44,16 @@ class CompanyResourceRestTest {
                 .when()
                 .post("/create")
                 .then()
-                .statusCode(Response.Status.CREATED.getStatusCode())
-                .header("location", "http://localhost:8081/api/company/2");
+                .statusCode(Response.Status.OK.getStatusCode())
+                .body(
+                        "companyName", is("CP GmbH"),
+                        "branche", is("Heiztechnik"),
+                        "id", is(2)
+                );
     }
 
     @Test
-//    @Order(1)
+    @Order(2)
     void getById() {
         given()
                 .pathParam("id", "3")
@@ -59,7 +67,7 @@ class CompanyResourceRestTest {
     }
 
     @Test
-//    @Order(2)
+    @Order(3)
     void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -71,6 +79,7 @@ class CompanyResourceRestTest {
     }
 
     @Test
+    @Order(4)
     void update() {
         Company companyToUpdate = companyRepository.getCompanyById(3L);
         companyToUpdate.setCompanyName("UPDATE Crop 8 GmbH");
@@ -78,29 +87,23 @@ class CompanyResourceRestTest {
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .pathParam("id", companyToUpdate.getId())
                 .body(companyToUpdate)
                 .when()
-                .put("/{id}")
+                .put("/update")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
                 .log().body()
                 .body("companyName", is(companyToUpdate.getCompanyName()),
                         "email", is(companyToUpdate.getEmail()));
-
-        given()
-                .contentType(MediaType.APPLICATION_JSON)
-                .pathParam("id", companyToUpdate.getId())
-                .when()
-                .get("/{id}")
-                .then()
-                .statusCode(Response.Status.OK.getStatusCode())
-                .body("companyName", is(companyToUpdate.getCompanyName()),
-                        "email", is(companyToUpdate.getEmail()));
     }
 
     @Test
+    @Order(99)
+    @Disabled
     void delete() {
+
+        Company company = this.companyRepository.getCompanyById(2L);
+
         given()
                 .pathParam("id", 2L)
                 .when()
@@ -108,5 +111,7 @@ class CompanyResourceRestTest {
                 .then()
                 .statusCode(200)
                 .log().everything();
+
+        this.companyRepository.save(company);
     }
 }

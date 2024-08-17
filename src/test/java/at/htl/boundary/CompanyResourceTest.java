@@ -45,8 +45,8 @@ class CompanyResourceTest {
         Response response = companyResource.create(company1);
 
         assertNotNull(response);
-        assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
-        assertNotNull(response.getLocation());
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertNotNull(response.getEntity());
     }
 
     @Test

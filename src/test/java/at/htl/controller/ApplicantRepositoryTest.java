@@ -17,18 +17,18 @@ class ApplicantRepositoryTest {
 
     @Test
     void getApplicantsByBrancheOK() {
-        List<Applicant> applicants = this.applicantRepository.getByBranche("Mediendesign");
+        List<Applicant> applicants = this.applicantRepository.getByJobField("Gastronomie");
 
         assertNotNull(applicants);
         assertFalse(applicants.isEmpty());
-        assertEquals(15L, applicants.get(0).getId());
-        assertEquals("Mediendesign", applicants.get(0).getJobBranche());
-        assertEquals("Georg", applicants.get(0).getFirstName());
+        assertEquals(14L, applicants.get(0).getId());
+        assertEquals("Gastronomie", applicants.get(0).getJobField());
+        assertEquals("Ludwig", applicants.get(0).getFirstName());
     }
 
     @Test
         void getApplicantsByBrancheKO() {
-            List<Applicant> applicants = this.applicantRepository.getByBranche("Automechanik");
+            List<Applicant> applicants = this.applicantRepository.getByJobField("Automechanik");
 
             assertNotNull(applicants);
             assertTrue(applicants.isEmpty());
