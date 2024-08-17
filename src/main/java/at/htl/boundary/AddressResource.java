@@ -36,14 +36,15 @@ public class AddressResource {
     }
 
     @PUT
-    @Path("/update")
+    @Path("/update/{id}")
     @Transactional
     public Response update(Address address) {
-        return Response.ok(addressRepository.saveWithReturn(address)).build();
+        return Response.ok(addressRepository.save(address)).build();
     }
 
     @DELETE
     @Path("/{id}")
+    @Transactional
     public Response delete(@PathParam("id") Long id) {
         boolean deleted = addressRepository.deleteById(id);
         if (deleted) {

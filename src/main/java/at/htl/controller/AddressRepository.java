@@ -17,9 +17,4 @@ public class AddressRepository implements PanacheRepository<Address> {
     public Address save(Address address) {
         return em.merge(address);
     }
-
-    @Transactional
-    public Address saveWithReturn(Address address) {
-        return getEntityManager().merge(address);
-    }
 }

@@ -6,21 +6,22 @@ import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
 @QuarkusTest
 @TestHTTPEndpoint(AddressResource.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AddressResourceRestTest {
 
     @Test
-    void getById() {
-    }
-
-    @Test
     @TestTransaction
+    @Order(1)
     void create() {
 
         Address testAddress = new Address(
@@ -39,11 +40,30 @@ class AddressResourceRestTest {
                 .post("/")
                 .then()
                 .log().everything()
-                .statusCode(Response.Status.CREATED.getStatusCode())
-                .header("location", "http://localhost:8081/api/address/1");
+                .statusCode(Response.Status.OK.getStatusCode())
+                .body("street", is("Teststraße"),
+                        "streetNo", is(Integer.toString(2)),
+                        "city", is("Teststadt"));
     }
 
     @Test
+    @Order(2)
+    void getById() {
+
+        given()
+                .pathParam("id", "1")
+                .when()
+                .get("/{id}")
+                .then()
+                .statusCode(200)
+                .log().body()
+                .body("street", is("Teststraße"),
+                        "streetNo", is(Integer.toString(2)),
+                        "city", is("Teststadt"));
+    }
+
+    @Test
+    @Order(3)
     void updateById() {
 
         Address testUpdateAddress = new Address(
@@ -54,7 +74,7 @@ class AddressResourceRestTest {
                 "updatedTestland",
                 "Teststaat"
         );
-        testUpdateAddress.setId(5L);
+        testUpdateAddress.setId(1L);
 
 
         given()
@@ -65,7 +85,9 @@ class AddressResourceRestTest {
                 .put("/update/{id}")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
-                .body("street", is(testUpdateAddress.getStreet()));
+                .body("street", is(testUpdateAddress.getStreet()),
+                        "id", is(1),
+                         "country", is(testUpdateAddress.getCountry()));
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -78,6 +100,14 @@ class AddressResourceRestTest {
     }
 
     @Test
+    @Order(4)
     void delete() {
+        Long id = 1L;
+        given()
+                .pathParam("id", id)
+                .when()
+                .delete("/{id}")
+                .then()
+                .statusCode(200);
     }
 }
