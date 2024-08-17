@@ -72,9 +72,9 @@ public class ApplicantResource {
 //    }
 
     @GET
-    @Path("getAllByBranche/{branche}")
+    @Path("getAllByBranche/{jobField}")
     @Consumes(MediaType.TEXT_PLAIN)
-    public Response getAllByBranche(@PathParam("branche") String branche) {
-        return Response.ok(applicantRepository.getByBranche(branche)).build();
+    public Response getAllByBranche(@PathParam("jobField") String jobField) {
+        return Response.ok(applicantRepository.getByBranche(jobField)).build();
     }
 }

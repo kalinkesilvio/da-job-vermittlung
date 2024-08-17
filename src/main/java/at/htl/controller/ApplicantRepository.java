@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -43,10 +44,11 @@ public class ApplicantRepository implements PanacheRepository<Applicant> {
         return this.save(applicant);
     }
 
-    public List<Applicant> getByBranche(String branche) {
+    public List<Applicant> getByBranche(String jobField) {
         return findAll()
                 .stream()
-                .filter(a -> a.getJobBranche().equalsIgnoreCase(branche))
+                .filter(a -> Optional.ofNullable(a.getJobField()).isPresent())
+                .filter(a -> a.getJobField().equalsIgnoreCase(jobField))
                 .collect(Collectors.toList());
     }
 }

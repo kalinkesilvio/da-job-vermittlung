@@ -15,7 +15,7 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 @TestHTTPEndpoint(ApplicantResource.class)
-//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ApplicantResourceRestTest {
 
      private Applicant applicant;
@@ -40,7 +40,7 @@ class ApplicantResourceRestTest {
     }
 
     @Test
-//    @Order(4)
+    @Order(1)
     @TestTransaction
     void create() {
         given()
@@ -50,30 +50,29 @@ class ApplicantResourceRestTest {
                 .post("/create")
                 .prettyPeek()
                 .then()
-                .statusCode(Response.Status.CREATED.getStatusCode())
-                .header("location", "http://localhost:8081/api/applicant/1");
+                .statusCode(Response.Status.OK.getStatusCode())
+                .body("firstName", is("John"),
+                        "skillDescr", is("handy with camera stuff"),
+                        "jobBranche", is("Medientechnik"));
     }
 
-//    @Test
-//    void updateById() {
-//    }
-
     @Test
-//    @Order(1)
+    @Order(2)
     void getById() {
         given()
-                .pathParam("id", "14")
+                .pathParam("id", "1")
                 .when()
                 .get("/{id}")
                 .then()
                 // .log().body()
                 .statusCode(200)
-                .body("firstName", is("Ludwig"),
-                        "jobField", is("Koch"));
+                .body("firstName", is("John"),
+                        "skillDescr", is("handy with camera stuff"),
+                        "jobBranche", is("Medientechnik"));
     }
 
     @Test
-//    @Order(2)
+    @Order(3)
     void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -81,11 +80,11 @@ class ApplicantResourceRestTest {
                 .get("/getAll")
                 .then()
                 .statusCode(200)
-                .body("size()", is(2));
+                .body("size()", is(3));
     }
 
     @Test
-//    @Order(4)
+    @Order(99)
     void delete() {
         given()
                 .pathParam("id", 15L)
@@ -97,12 +96,12 @@ class ApplicantResourceRestTest {
     }
 
     @Test
-//    @Order(3)
+    @Order(5)
     void getAllByBranche() {
         given()
-                .pathParam("branche", "Gastronomie")
+                .pathParam("jobField", "Gastronomie")
                 .when()
-                .get("/getAllByBranche/{branche}")
+                .get("/getAllByBranche/{jobField}")
                 .peek()
                 .then()
                 .statusCode(200)
