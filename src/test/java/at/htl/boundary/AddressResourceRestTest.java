@@ -63,6 +63,24 @@ class AddressResourceRestTest {
     }
 
     @Test
+    @Order(2)
+    void getById_restriction() {
+
+        given()
+                .pathParam("id", "1")
+                .when()
+                .get("/getById_restriction/{id}")
+                .then()
+                .statusCode(200)
+                .log().body()
+                .body("zipno", is(Integer.toString(3465)),
+                        "country", is("Testland"),
+                        "city", is("Teststadt"),
+                        "state", is("Teststaat"),
+                        "size()", is(4));
+    }
+
+    @Test
     @Order(3)
     void updateById() {
 
