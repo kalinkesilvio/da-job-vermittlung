@@ -12,8 +12,7 @@ import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 @QuarkusTest
 @TestHTTPEndpoint(JobOfferResource.class)
@@ -75,6 +74,22 @@ public class JobOfferResourceRestTest {
                 .body("id", is(13),
                         "category", is("Kartografie"),
                         "salary", is(3000.0F));
+    }
+
+    @Test
+    @Order(2)
+    public void getById_partial() {
+        given()
+                .pathParam("id", 13)
+                .when()
+                .get("/partial/{id}")
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode())
+                .body("id", nullValue(),
+                        "category", is("Kartografie"),
+                        "condition", is("langjährige Erfahrung als Kartografe"),
+                        "title", is("Kartografe (Meerebene)"),
+                        "salary", nullValue());
     }
 
     @Test

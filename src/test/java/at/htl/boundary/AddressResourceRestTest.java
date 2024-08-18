@@ -13,6 +13,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 @QuarkusTest
 @TestHTTPEndpoint(AddressResource.class)
@@ -69,11 +70,12 @@ class AddressResourceRestTest {
         given()
                 .pathParam("id", "1")
                 .when()
-                .get("/getById_restriction/{id}")
+                .get("/getById_partial/{id}")
                 .then()
                 .statusCode(200)
                 .log().body()
-                .body("zipno", is(Integer.toString(3465)),
+                .body(  "street", nullValue(),
+                        "zipno", is(Integer.toString(3465)),
                         "country", is("Testland"),
                         "city", is("Teststadt"),
                         "state", is("Teststaat"),

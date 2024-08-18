@@ -24,9 +24,9 @@ public class AddressResource {
     }
 
     @GET
-    @Path("/getById_restriction/{id}")
+    @Path("/getById_partial/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getById_Restricted(@PathParam("id") Long id) {
+    public Response getById_partial(@PathParam("id") Long id) {
         Address address = addressRepository.findById(id);
 
         if (address != null) {

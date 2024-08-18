@@ -4,8 +4,11 @@ import at.htl.controller.JobOfferRepository;
 import at.htl.entity.Company;
 import at.htl.entity.JobOffer;
 import jakarta.inject.Inject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
@@ -35,6 +38,23 @@ public class JobOfferResource {
         JobOffer jobOffer = jobOfferRepository.findById(id);
         if (jobOffer != null) {
             return Response.ok(jobOffer).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @GET
+    @Path("/partial/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getById_partial(@PathParam("id") Long id) {
+        JobOffer jobOffer = jobOfferRepository.findById(id);
+        if (jobOffer != null) {
+            JsonObject o = Json.createObjectBuilder()
+                    .add("category", jobOffer.getCategory())
+                    .add("condition", jobOffer.getCondition())
+                    .add("title", jobOffer.getTitle())
+                    .add("descr", jobOffer.getDescr())
+                    .build();
+            return Response.ok(o.toString()).build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
