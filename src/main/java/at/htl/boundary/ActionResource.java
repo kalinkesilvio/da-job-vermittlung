@@ -2,6 +2,9 @@ package at.htl.boundary;
 
 import at.htl.controller.ActionRepository;
 import at.htl.entity.Action;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.TransactionScoped;
 import jakarta.transaction.Transactional;
@@ -11,6 +14,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
 
+@Authenticated
 @Path("action")
 public class ActionResource {
 
@@ -19,6 +23,7 @@ public class ActionResource {
 
     @POST
     @Transactional
+    @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Action action) {
@@ -31,12 +36,14 @@ public class ActionResource {
 
     @GET
     @Path("/getAll")
+    @RolesAllowed("admin")
     public Response getAll() {
         return Response.ok(actionRepository.listAll()).build();
     }
 
     @GET
     @Path("/{id}")
+    @RolesAllowed("admin")
     public Response findById(@PathParam("id") Long id) {
         Action action = actionRepository.findById(id);
         if (action.isPersistent()) {
@@ -47,6 +54,7 @@ public class ActionResource {
 
     @DELETE
     @Transactional
+    @PermitAll
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
         boolean deleted = actionRepository.deleteById(id);
