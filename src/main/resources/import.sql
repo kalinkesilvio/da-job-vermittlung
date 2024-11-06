@@ -185,16 +185,19 @@ insert into action (applicant_id, company_id, actionname, actiondate) values(
 
                          );
 
-insert into application (applicant_id, joboffer_id, statustext) values(
+insert into application (applicant_id, joboffer_id, status, startdate) values(
 --                               1,
                                2,
                                12,
-                               'work in progress...'
+                                        2,
+                            '12-10-2024 13:54'
+
                               );
 
-insert into application (applicant_id, joboffer_id, statustext) values(
+insert into application (applicant_id, joboffer_id, status, startdate) values(
 --                                2,
                                1,
                                12,
-                               'seen and processed'
+                                1,
+                               '06-11-2024 18:36'
                               );

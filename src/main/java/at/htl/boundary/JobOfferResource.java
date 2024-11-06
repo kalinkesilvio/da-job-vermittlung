@@ -1,6 +1,7 @@
 package at.htl.boundary;
 
 import at.htl.controller.JobOfferRepository;
+import at.htl.entity.Applicant;
 import at.htl.entity.Company;
 import at.htl.entity.JobOffer;
 import jakarta.inject.Inject;
@@ -10,12 +11,14 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 @Path("/joboffer")
+@SecurityRequirement(name = "Keycloak")
 public class JobOfferResource {
 
     @Inject
@@ -105,6 +108,16 @@ public class JobOfferResource {
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
+
+    // @POST
+    // @Path("getRecommendation")
+    // public Response getJobOffersByRecommendation(Applicant applicant) {
+    //     List<JobOffer> recommendedJobOffers = this.jobOfferRepository.recommend(applicant);
+    //     if (!recommendedJobOffers.isEmpty()) {
+    //         return Response.ok(recommendedJobOffers).build();
+    //     }
+    //     return Response.status(Response.Status.NOT_FOUND).build();
+    // }
 
     @PUT
     @Path("update")

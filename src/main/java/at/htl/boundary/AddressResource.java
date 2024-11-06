@@ -9,8 +9,10 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
 @Path("/address")
+@SecurityRequirement(name = "Keycloak")
 public class AddressResource {
 
     @Inject
@@ -41,6 +43,13 @@ public class AddressResource {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    @GET
+    @Path("/getAll")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAll() {
+        return Response.ok(addressRepository.listAll()).build();
+    }
+
     @POST
     @Path("/")
     public Response create(Address address) {
@@ -52,7 +61,7 @@ public class AddressResource {
     }
 
     @PUT
-    @Path("/update/{id}")
+    @Path("/update")
     @Transactional
     public Response update(Address address) {
         return Response.ok(addressRepository.save(address)).build();

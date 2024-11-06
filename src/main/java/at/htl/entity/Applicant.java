@@ -16,7 +16,7 @@ public class Applicant extends PanacheEntityBase {
 
     private String email;
 
-    private String password;
+    private String password_login;
 
     @Column(length = 10485768)
     private String resumeUrl;
@@ -43,16 +43,18 @@ public class Applicant extends PanacheEntityBase {
     public Applicant() {
     }
 
-    public Applicant(String email, String password) {
+    public Applicant(String email, String password_login) {
         this.setEmail(email);
-        this.setPassword(password);
+        this.setPassword(password_login
+);
     }
 
-    public Applicant(String firstName, String lastName, String email, String password, String resumeUrl, String descr, String skillDescr, String interestDescr, String jobField, String jobBranche, String preferableWork, int hoursPerWeek, boolean commute, String imageUrl, Address address) {
+    public Applicant(String firstName, String lastName, String email, String password_login, String resumeUrl, String descr, String skillDescr, String interestDescr, String jobField, String jobBranche, String preferableWork, int hoursPerWeek, boolean commute, String imageUrl, Address address) {
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setEmail(email);
-        this.setPassword(password);
+        this.setPassword(password_login
+);
         this.setResumeUrl(resumeUrl);
         this.setDescr(descr);
         this.setSkillDescr(skillDescr);
@@ -100,11 +102,14 @@ public class Applicant extends PanacheEntityBase {
     }
 
     public String getPassword() {
-        return password;
+        return password_login
+;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password_login) {
+        this.password_login
+ = password_login
+;
     }
 
     public String getResumeUrl() {

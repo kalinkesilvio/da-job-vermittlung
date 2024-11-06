@@ -11,11 +11,13 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
 import java.net.URI;
 
-@Authenticated
+//@Authenticated
 @Path("action")
+@SecurityRequirement(name = "Keycloak")
 public class ActionResource {
 
     @Inject
@@ -23,9 +25,10 @@ public class ActionResource {
 
     @POST
     @Transactional
-    @PermitAll
+   // @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/")
     public Response create(Action action) {
         Action savedAction = actionRepository.save(action);
         if (savedAction != null) {
@@ -36,14 +39,14 @@ public class ActionResource {
 
     @GET
     @Path("/getAll")
-    @RolesAllowed("admin")
+   // @RolesAllowed("admin")
     public Response getAll() {
         return Response.ok(actionRepository.listAll()).build();
     }
 
     @GET
     @Path("/{id}")
-    @RolesAllowed("admin")
+  //  @RolesAllowed("admin")
     public Response findById(@PathParam("id") Long id) {
         Action action = actionRepository.findById(id);
         if (action.isPersistent()) {
@@ -54,7 +57,7 @@ public class ActionResource {
 
     @DELETE
     @Transactional
-    @PermitAll
+  //  @PermitAll
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
         boolean deleted = actionRepository.deleteById(id);

@@ -1,9 +1,12 @@
 package at.htl.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class Application extends PanacheEntityBase {
@@ -22,15 +25,19 @@ public class Application extends PanacheEntityBase {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private JobOffer jobOffer;
 
-    private String statusText;
+    private Status status;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd-MM-yyyy hh:mm")
+    private LocalDateTime startDate;
 
     public Application() {
     }
 
-    public Application(Applicant applicant, JobOffer jobOffer, String statusText) {
-        this.setApplicant(applicant);
-        this.setJobOffer(jobOffer);
-        this.setStatusText(statusText);
+    public Application(Applicant applicant, JobOffer jobOffer, Status status, LocalDateTime startDate) {
+        this.applicant = applicant;
+        this.jobOffer = jobOffer;
+        this.status = status;
+        this.startDate = startDate;
     }
 
     public void setId(Long id) {
@@ -57,11 +64,19 @@ public class Application extends PanacheEntityBase {
         this.jobOffer = jobOffer;
     }
 
-    public String getStatusText() {
-        return statusText;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatusText(String statusText) {
-        this.statusText = statusText;
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 }

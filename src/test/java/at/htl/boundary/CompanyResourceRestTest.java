@@ -2,6 +2,8 @@ package at.htl.boundary;
 
 import at.htl.controller.CompanyRepository;
 import at.htl.entity.Company;
+import io.quarkus.test.InjectMock;
+import io.quarkus.test.Mock;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -9,6 +11,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -22,9 +25,6 @@ class CompanyResourceRestTest {
 
     @Inject
     CompanyRepository companyRepository;
-
-    @Inject
-    CompanyResource companyResource;
 
     private Company company1;
 
@@ -100,18 +100,17 @@ class CompanyResourceRestTest {
     @Test
     @Order(99)
     @Disabled
+    @TestTransaction
     void delete() {
 
-        Company company = this.companyRepository.getCompanyById(2L);
+        Long removeId = 2L;
 
         given()
-                .pathParam("id", 2L)
+                .pathParam("id", removeId)
                 .when()
                 .delete("/{id}")
                 .then()
                 .statusCode(200)
                 .log().everything();
-
-        this.companyRepository.save(company);
     }
 }
