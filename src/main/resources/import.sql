@@ -131,50 +131,46 @@ insert into joboffer values(
                                'Kartografe (Meerebene)'
                            );
 
-insert into applicant values(
-                                false,
-                                25,
-                                100,
-                                14,
---                                 '2008-10-5',
-                                '30 jährige Erfahrung als Koch im Restauraunt La Button. Organisiert und ehrgeizig zur vollen Kundenzufriedenheit',
-                                'ludPram@gmail.com',
-                                'Ludwig',
-                                null,
-                                'herausfordernde Gerichte zubereiten',
-                                'Gastronomie',
-                                'Koch',
-                                'Pramek',
-                                'DPWUOAFHNCPOWIUHNCAWFC.AQC)(/QNR=)(QZP)(QZBWCR/ZCB',
-                                'Koch',
-                                null,
-                                'Meister in der Küche (hinterfragen Sies erst garnicht)'
-                         );
 
-insert into applicant --(id, firstname, lastname, jobbranche)
-                        values(
-                                true,
-                                15,
-                                101,
-                                15,
---                                '2015-2-13',
-                                'Für verschiedenste Unternehmen in dieser Branche gearbeitet',
-                                'georgsonlk@gmail.com',
-                                'Georg',
-                                null,
-                                'kreative Freiheit',
-                                'Mediendesign',
-                                'Illustrator',
-                                'Sonkl',
-                                'AKJSDBAKWJCKAWDJBDKAWJ.dlawcn938rzx293qe2x',
-                                'Banner und Produkt Design',
-                                null,
-                                'Autodidakt'
-                         );
-
+insert into applicant (firstname, lastname, email, password_login, resumeurl, descr, skilldescr, interestdescr, jobfield, jobbranche, preferablework, hoursperweek, commute, imageurl, address_id)
+values(
+          --                              15,
+          'Georg',
+          'Sonkl',
+          'georgsonlk@gmail.com',
+          'AKJSDBAKWJCKAWDJBDKAWJ.dlawcn938rzx293qe2x',
+          null,
+          'Für verschiedenste Unternehmen in dieser Branche gearbeitet',
+          'Autodidakt',
+          'kreative Freiheit',
+          'Illustrator',
+          'Mediendesign',
+          'Banner und Produkt Design',
+          15,
+          true,
+          null,
+          101
+      ),(
+    'Ludwig',
+    'Pramek',
+    'ludWIGPramek@gmail.com',
+    'DPWUOAFHNCPOWIUHNCAWFC.AQC)(/QNR=)(QZP)(QZBWCR/ZCB',
+         null,
+    '30 jährige Erfahrung als Koch im Restauraunt La Button. Organisiert und ehrgeizig zur vollen Kundenzufriedenheit',
+    'Meister in der Küche (hinterfragen Sies erst garnicht)',
+    'herausfordernde Gerichte zubereiten',
+    'Koch',
+    'Gastronomie',
+    'Koch',
+          25,
+         false,
+         null,
+          100
+      );
+select * from applicant;
 insert into action (applicant_id, company_id, actionname, actiondate) values(
 --                              100,
-                              14,
+                              2,
                               2,
                               'favorable',
                             '2023-12-03 15:06:24'
@@ -182,7 +178,7 @@ insert into action (applicant_id, company_id, actionname, actiondate) values(
 
 insert into action (applicant_id, company_id, actionname, actiondate) values(
 --                              101,
-                              14,
+                              2,
                               2,
                               'like',
                               '2024-01-03 00:00:00'
@@ -191,14 +187,14 @@ insert into action (applicant_id, company_id, actionname, actiondate) values(
 
 insert into application (applicant_id, joboffer_id, statustext) values(
 --                               1,
-                               14,
+                               2,
                                12,
                                'work in progress...'
                               );
 
 insert into application (applicant_id, joboffer_id, statustext) values(
 --                                2,
-                               15,
+                               1,
                                12,
                                'seen and processed'
                               );
