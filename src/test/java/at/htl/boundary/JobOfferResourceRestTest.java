@@ -157,7 +157,6 @@ public class JobOfferResourceRestTest {
     @Order(7)
     public void getRandomJobOffers_0() {
         int quantity = 0;
-
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("quantity", quantity)

@@ -42,8 +42,11 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
                 .toList();
 
         if (ids.size() < quantity) {
+            if (ids.isEmpty()) {
+                return List.of();
+            }
             quantity = ids.size();
-        } else if (quantity == 0) {
+        } else if (quantity <= 0) {
             return List.of();
         }
 

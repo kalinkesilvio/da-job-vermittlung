@@ -1,5 +1,6 @@
 package at.htl.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -26,6 +27,7 @@ public class Action extends PanacheEntityBase {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Applicant applicant;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd-MM-yyyy hh:mm a")
     private LocalDateTime actionDate;
 
     public Action() {
