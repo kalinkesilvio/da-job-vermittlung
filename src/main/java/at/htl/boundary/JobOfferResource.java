@@ -1,8 +1,6 @@
 package at.htl.boundary;
 
 import at.htl.controller.JobOfferRepository;
-import at.htl.entity.Applicant;
-import at.htl.entity.Company;
 import at.htl.entity.JobOffer;
 import jakarta.inject.Inject;
 import jakarta.json.Json;
@@ -13,7 +11,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +35,7 @@ public class JobOfferResource {
     @GET
     @Path("/{id}")
     public Response getById(@PathParam("id") Long id) {
-        JobOffer jobOffer = jobOfferRepository.findById(id);
+        JobOffer jobOffer = jobOfferRepository.findJobOfferById(id);
         if (jobOffer != null) {
             return Response.ok(jobOffer).build();
         }
@@ -49,7 +46,7 @@ public class JobOfferResource {
     @Path("/partial/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById_partial(@PathParam("id") Long id) {
-        JobOffer jobOffer = jobOfferRepository.findById(id);
+        JobOffer jobOffer = jobOfferRepository.findJobOfferById(id);
         if (jobOffer != null) {
             JsonObject o = Json.createObjectBuilder()
                     .add("category", jobOffer.getCategory())

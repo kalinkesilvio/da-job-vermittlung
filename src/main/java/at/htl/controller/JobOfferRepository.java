@@ -36,10 +36,7 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
 
         Random random = new Random();
 
-        List<Long> ids = findAll()
-                .stream()
-                .map(JobOffer::getId)
-                .toList();
+        List<Long> ids = this.jobOfferIds();
 
         if (ids.size() < quantity) {
             if (ids.isEmpty()) {
@@ -53,7 +50,8 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
         List<JobOffer> filteredJobOffers = new LinkedList<>();
 
         do {
-            filteredJobOffers.add(findById(ids.get(random.nextInt(ids.size()))));
+            Long randomId = ids.get(random.nextInt(ids.size()));
+            filteredJobOffers.add(this.findJobOfferById(randomId));
 
             filteredJobOffers = filteredJobOffers
                     .stream()
@@ -68,6 +66,16 @@ public class JobOfferRepository implements PanacheRepository<JobOffer> {
                 .collect(Collectors.toList());
     }
 
+    public JobOffer findJobOfferById(Long id) {
+        return findById(id);
+    }
+
+    public List<Long> jobOfferIds() {
+        return findAll()
+                .stream()
+                .map(JobOffer::getId)
+                .toList();
+    }
 
     public List<JobOffer> getByCategory(String category) {
         return em.createQuery(

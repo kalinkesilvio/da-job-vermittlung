@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
@@ -84,7 +85,7 @@ class JobOfferResourceTest {
 
     @Test
     void getById() {
-        Mockito.when(jobOfferRepository.findById(1L)).thenReturn(jobOffer);
+        Mockito.when(jobOfferRepository.findJobOfferById(1L)).thenReturn(jobOffer);
 
         Response response = jobOfferResource.getById(1L);
         JobOffer jobOfferFromResponse = (JobOffer) response.getEntity();
@@ -121,4 +122,6 @@ class JobOfferResourceTest {
         assertFalse(response.hasEntity());
         assertEquals(response.getStatusInfo(), Response.Status.NOT_FOUND);
     }
+
+
 }

@@ -27,7 +27,7 @@ public class Application extends PanacheEntityBase {
 
     private Status status;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd-MM-yyyy hh:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd-MM-yyyy hh:mm a")
     private LocalDateTime startDate;
 
     public Application() {
