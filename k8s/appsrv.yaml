@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: appsrv
-          image: ghcr.io/htl-leonding/vehicle-k8s/backend:latest@sha256:8707086f9e3ff2c11fdfaec42af54aa91d84f692f79b8f1c38abd63767ffb1c8
+          image: ghcr.io/kalinkesilvio/da-job-vermittlung/backend:latest
           # remove this when stable. Currently, we do not take care of version numbers
           imagePullPolicy: Always
           # command: ["tail","-f","/dev/null"]

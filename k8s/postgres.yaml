@@ -48,8 +48,8 @@ metadata:
 
 type: kubernetes.io/basic-auth
 stringData:
-  username: "demo"
-  password: "demo"
+  username: "keycloak"
+  password: "123456"
 ---
 apiVersion: apps/v1
 kind: Deployment
