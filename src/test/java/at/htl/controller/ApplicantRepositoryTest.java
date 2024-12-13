@@ -21,7 +21,7 @@ class ApplicantRepositoryTest {
 
         assertNotNull(applicants);
         assertFalse(applicants.isEmpty());
-        assertEquals(14L, applicants.get(0).getId());
+        assertEquals(2L, applicants.get(0).getId());
         assertEquals("Gastronomie", applicants.get(0).getJobField());
         assertEquals("Ludwig", applicants.get(0).getFirstName());
     }

@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.nullValue;
 @QuarkusTest
 @TestHTTPEndpoint(AddressResource.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class AddressResourceRestTest {
+class AddressResourceRestTest extends AccessTokenProvider {
 
     @Test
     @TestTransaction
@@ -37,6 +37,7 @@ class AddressResourceRestTest {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(testAddress)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .post("/")
                 .then()
@@ -53,6 +54,7 @@ class AddressResourceRestTest {
 
         given()
                 .pathParam("id", "1")
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/{id}")
                 .then()
@@ -69,6 +71,7 @@ class AddressResourceRestTest {
 
         given()
                 .pathParam("id", "1")
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/getById_partial/{id}")
                 .then()
@@ -94,23 +97,24 @@ class AddressResourceRestTest {
                 "updatedTestland",
                 "Teststaat"
         );
-        testUpdateAddress.setId(1L);
+        testUpdateAddress.setId(5L);
 
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .pathParam("id", testUpdateAddress.getId())
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .body(testUpdateAddress)
                 .when()
-                .put("/update/{id}")
+                .put("/update")
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode())
                 .body("street", is(testUpdateAddress.getStreet()),
-                        "id", is(1),
+                        "id", is(5),
                          "country", is(testUpdateAddress.getCountry()));
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .pathParam("id", testUpdateAddress.getId())
                 .when()
                 .get("/{id}")
@@ -125,6 +129,7 @@ class AddressResourceRestTest {
         Long id = 1L;
         given()
                 .pathParam("id", id)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .delete("/{id}")
                 .then()

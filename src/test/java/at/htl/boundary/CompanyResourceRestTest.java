@@ -21,7 +21,7 @@ import static org.hamcrest.CoreMatchers.is;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestHTTPEndpoint(CompanyResource.class)
 //@Disabled
-class CompanyResourceRestTest {
+class CompanyResourceRestTest extends AccessTokenProvider {
 
     @Inject
     CompanyRepository companyRepository;
@@ -41,6 +41,7 @@ class CompanyResourceRestTest {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(this.company1)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .post("/create")
                 .then()
@@ -57,6 +58,7 @@ class CompanyResourceRestTest {
     void getById() {
         given()
                 .pathParam("id", "3")
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/{id}")
                 .then()
@@ -71,6 +73,7 @@ class CompanyResourceRestTest {
     void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/getAll")
                 .then()
@@ -88,6 +91,7 @@ class CompanyResourceRestTest {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(companyToUpdate)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .put("/update")
                 .then()
@@ -107,6 +111,7 @@ class CompanyResourceRestTest {
 
         given()
                 .pathParam("id", removeId)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .delete("/{id}")
                 .then()

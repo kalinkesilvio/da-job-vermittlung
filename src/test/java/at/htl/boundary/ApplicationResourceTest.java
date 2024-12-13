@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 @TestHTTPEndpoint(ApplicationResource.class)
-class ApplicationResourceTest {
+class ApplicationResourceTest extends AccessTokenProvider {
 
     @BeforeEach
     void setUp() {
@@ -26,11 +26,12 @@ class ApplicationResourceTest {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("id", jobOfferTestId)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/getByJobOfferId/{id}")
                 .then()
                 .statusCode(200)
                 .log().body()
-                .body("size()", is(1));
+                .body("size()", is(2));
     }
 }

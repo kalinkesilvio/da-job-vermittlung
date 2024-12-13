@@ -4,6 +4,7 @@ import at.htl.entity.Action;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.*;
@@ -16,7 +17,7 @@ import static org.hamcrest.Matchers.is;
 @QuarkusTest
 @TestHTTPEndpoint(ActionResource.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class ActionResourceRestTest {
+class ActionResourceRestTest extends AccessTokenProvider {
 
     @Test
     @Order(3)
@@ -30,6 +31,7 @@ class ActionResourceRestTest {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(testAction)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .post("/")
                 .then()
@@ -43,6 +45,7 @@ class ActionResourceRestTest {
     void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/getAll")
                 .then()
@@ -56,13 +59,14 @@ class ActionResourceRestTest {
     void findById() {
         given()
                 .pathParam("id", "1")
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/{id}")
                 .then()
                 .statusCode(200)
                 .log().body()
                 .body("actionName", is("favorable"),
-                        "actionDate", is("2023-12-03T15:06:24"));
+                        "actionDate", is("03-12-2023 03:06 PM"));
     }
 
     @Test
@@ -72,6 +76,7 @@ class ActionResourceRestTest {
         Long id = 1L;
         given()
                 .pathParam("id", id)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .delete("/{id}")
                 .then()

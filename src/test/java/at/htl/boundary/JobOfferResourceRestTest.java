@@ -17,10 +17,12 @@ import static org.hamcrest.Matchers.*;
 @QuarkusTest
 @TestHTTPEndpoint(JobOfferResource.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class JobOfferResourceRestTest {
+public class JobOfferResourceRestTest extends AccessTokenProvider {
 
     @Inject
     CompanyResource companyResource;
+
+
 
 //    @BeforeEach
 //    void setUp() {
@@ -48,6 +50,7 @@ public class JobOfferResourceRestTest {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(jobOffer1)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .post("/create")
                 .then()
@@ -67,6 +70,7 @@ public class JobOfferResourceRestTest {
     public void getById() {
         given()
                 .pathParam("id", 13)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/{id}")
                 .then()
@@ -81,6 +85,7 @@ public class JobOfferResourceRestTest {
     public void getById_partial() {
         given()
                 .pathParam("id", 13)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/partial/{id}")
                 .then()
@@ -97,6 +102,7 @@ public class JobOfferResourceRestTest {
     public void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/getAll")
                 .then()
@@ -112,6 +118,7 @@ public class JobOfferResourceRestTest {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("partial", partial)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/getByStringPartial/{partial}")
                 .then()
@@ -130,6 +137,7 @@ public class JobOfferResourceRestTest {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("partial", partial)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/getByStringPartial/{partial}")
                 .then()
@@ -147,6 +155,7 @@ public class JobOfferResourceRestTest {
 
         given()
                 .pathParam("partial", partial)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/getByStringPartial/{partial}")
                 .then()
@@ -160,6 +169,7 @@ public class JobOfferResourceRestTest {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("quantity", quantity)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("getRandomJobOffers/{quantity}")
                 .then()
@@ -174,6 +184,7 @@ public class JobOfferResourceRestTest {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("quantity", quantity)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("getRandomJobOffers/{quantity}")
                 .then()
@@ -191,6 +202,7 @@ public class JobOfferResourceRestTest {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("quantity", quantity)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("getRandomJobOffers/{quantity}")
                 .then()
@@ -211,6 +223,7 @@ public class JobOfferResourceRestTest {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("category", category)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("getJobOfferByCategory/{category}")
                 .then()
@@ -228,6 +241,7 @@ public class JobOfferResourceRestTest {
 
         given()
                 .pathParam("category", category)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("getJobOfferByCategory/{category}")
                 .then()
@@ -240,6 +254,7 @@ public class JobOfferResourceRestTest {
     void delete() {
         given()
                 .pathParam("id", 10L)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .delete("/{id}")
                 .then()
@@ -250,7 +265,7 @@ public class JobOfferResourceRestTest {
 
 @QuarkusTest
 @Disabled
-class JobOfferDeleteTest {
+class JobOfferDeleteTest extends AccessTokenProvider {
     @Test
     @TestTransaction
     @Order(98)
@@ -260,6 +275,7 @@ class JobOfferDeleteTest {
 
         given()
                 .pathParam("id", joboffer_id)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("application/getByJobOfferId/{id}")
                 .then()
@@ -269,6 +285,7 @@ class JobOfferDeleteTest {
 
         given()
                 .pathParam("id", 12L)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .delete("joboffer/{id}")
                 .then()
@@ -277,6 +294,7 @@ class JobOfferDeleteTest {
 
         given()
                 .pathParam("id", joboffer_id)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("application/getByJobOfferId/{id}")
                 .then()

@@ -16,7 +16,7 @@ import static org.hamcrest.CoreMatchers.is;
 @QuarkusTest
 @TestHTTPEndpoint(ApplicantResource.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class ApplicantResourceRestTest {
+class ApplicantResourceRestTest extends AccessTokenProvider {
 
      private Applicant applicant;
     private Applicant applicant2;
@@ -45,6 +45,7 @@ class ApplicantResourceRestTest {
     void create() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .body(this.applicant)
                 .when()
                 .post("/create")
@@ -61,6 +62,7 @@ class ApplicantResourceRestTest {
     void getById() {
         given()
                 .pathParam("id", "1")
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/{id}")
                 .then()
@@ -76,6 +78,7 @@ class ApplicantResourceRestTest {
     void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/getAll")
                 .then()
@@ -88,6 +91,7 @@ class ApplicantResourceRestTest {
     void delete() {
         given()
                 .pathParam("id", 15L)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .delete("/{id}")
                 .then()
@@ -100,6 +104,7 @@ class ApplicantResourceRestTest {
     void getAllByBranche() {
         given()
                 .pathParam("jobField", "Gastronomie")
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/getAllByBranche/{jobField}")
                 .peek()
@@ -113,13 +118,14 @@ class ApplicantResourceRestTest {
     @Order(6)
     void updateById() {
 
-        Applicant testApplicant = applicantRepository.getApplicantById(14L);
+        Applicant testApplicant = applicantRepository.getApplicantById(2L);
         testApplicant.setLastName("Prameeeeek");
         testApplicant.setEmail("pramek1231234@gmail.com");
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(testApplicant)
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .put("/update")
                 .then()
@@ -131,6 +137,7 @@ class ApplicantResourceRestTest {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("id", testApplicant.getId())
+                .auth().oauth2(getAccessToken("admin", "admin"))
                 .when()
                 .get("/{id}")
                 .then()
