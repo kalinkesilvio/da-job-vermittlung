@@ -1,6 +1,6 @@
 @startuml
 'https://plantuml.com/class-diagram
-
+left to right direction
 'class User {
 '    * userId: Long
 '    roleName: Enum
@@ -21,6 +21,8 @@ class JobOffer {
     descr: String
     category: String
     condition: String
+    hoursPerWeek: Double
+    + companyId: Company
 '    + offerDetailsId: OfferDetails
 }
 'class OfferDetails {
@@ -31,11 +33,12 @@ class JobOffer {
 class Company {
     * companyId: Long
     companyName: String
+    imageUrl: String
     websiteUrl: String
     branche: String
-    email: String
     telNo: String
     + jobOfferId: JobOffer
+    + addressId: Address
     '+ contactPersonId: ContactPerson
     '+ addressId: Address
 }
@@ -50,7 +53,7 @@ class Address {
 }
 class Applicant {
     * applicantId: Long
-    resume: File
+    resumeUrl: String
     descr: String
     skillDescr: String
     interestDescr: String
@@ -60,6 +63,7 @@ class Applicant {
     retirement: Date
     hoursPerWeek: Int
     commute: boolean
+    imageUrl: String
     + addressId: Address
 }
 class Action {
@@ -98,10 +102,20 @@ Applicant "1" -up- "0..*" Action
 Applicant "0..*" -- "0..*" JobOffer
 (Applicant, JobOffer) .. Application
 'note right on link: siehe Notiz 5.
+Application -- Status
 
 class Application {
+    applicationId: Long
+    startDate: LocalDateTime
+    status: Status
     + applicantId: Applicant
     + jobOfferId: JobOffer
+}
+
+enum Status {
+    ABSAGE
+    IN_BEARBEITUNG
+    ZUSAGE
 }
 
 'OfferDetails "1" -left-- "1" Address
