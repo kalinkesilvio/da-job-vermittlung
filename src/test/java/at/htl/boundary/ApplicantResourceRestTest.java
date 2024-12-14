@@ -18,7 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ApplicantResourceRestTest extends AccessTokenProvider {
 
-     private Applicant applicant;
+    private Applicant applicant;
     private Applicant applicant2;
 
     @Inject

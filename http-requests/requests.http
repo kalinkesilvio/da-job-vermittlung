@@ -1,0 +1,19 @@
+POST https://auth.htl-leonding.ac.at/realms/kalinke/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id = quarkus-be-job &
+client_secret = yav88kWxD5uxS9VgUFaIqXQRvH4bAoXE &
+grant_type = password &
+username = admin &
+password = admin &
+scope = openid
+
+> {% client.global.set("access_token", response.body.access_token); %}
+
+###
+
+GET https://auth.htl-leonding.ac.at/realms/kalinke/protocol/openid-connect/userinfo
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+###

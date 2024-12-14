@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: studcom-keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: studcom-keycloak
+  template:
+    metadata:
+      labels:
+        app: studcom-keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: 10122002/studcom-keycloak
+          ports:
+             - containerPort: 8191
+          env:
+            - name: KEYCLOAK_USER
+              value: "admin"
+            - name: KEYCLOAK_PASSWORD
+              value: "password"
+#            - name: KEYCLOAK_ADMIN
+#              value: "admin"
+#            - name: KEYCLOAK_ADMIN_PASSWORD
+#              value: "password"
+            - name: KC_DB
+              value: "postgres"
+            - name: KC_DB_USERNAME
+              value: "demo"
+            - name: KC_DB_PASSWORD
+              value: "demo"
+            - name: KC_DB_URL_HOST
+              value: "postgres"
+            - name: KC_DB_URL_DATABASE
+              value: "postgres"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: studcom-keycloak
+spec:
+  selector:
+    app: studcom-keycloak
+  ports:
+    - port: 8191
+      protocol: TCP
+      targetPort: 8191
+  type: LoadBalancer
