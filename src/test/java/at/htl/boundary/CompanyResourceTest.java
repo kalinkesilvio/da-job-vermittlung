@@ -79,5 +79,4 @@ class CompanyResourceTest {
 
         assertEquals(1L, entity.get(0).getId());
     }
-
 }
