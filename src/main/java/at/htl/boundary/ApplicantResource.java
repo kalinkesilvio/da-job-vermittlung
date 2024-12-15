@@ -19,7 +19,6 @@ import java.net.URI;
 import java.util.Optional;
 
 @Path("/applicant")
-@SecurityRequirement(name = "Keycloak")
 //@Authenticated
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)

@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/joboffer")
-@SecurityRequirement(name = "Keycloak")
 public class JobOfferResource {
 
     @Inject

@@ -12,7 +12,6 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 
 @Path("/address")
-@SecurityRequirement(name = "Keycloak")
 public class AddressResource {
 
     @Inject

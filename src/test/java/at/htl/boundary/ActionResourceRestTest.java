@@ -10,6 +10,7 @@ import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
@@ -18,6 +19,25 @@ import static org.hamcrest.Matchers.is;
 @TestHTTPEndpoint(ActionResource.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ActionResourceRestTest extends AccessTokenProvider {
+
+    private static String token = null;
+
+    @BeforeAll
+    public static void setup() {
+        token = given()
+                .contentType("application/x-www-form-urlencoded")
+                .formParams(Map.of(
+                        "username", "admin",
+                        "password", "admin",
+                        "grant_type", "password",
+                        "client_id", "quarkus-be-job",
+                        "client_secret", "yav88kWxD5uxS9VgUFaIqXQRvH4bAoXE",
+                        "scope", "openid"
+                ))
+                .post("https://auth.htl-leonding.ac.at/realms/kalinke/protocol/openid-connect/token")
+                .then().assertThat().statusCode(200)
+                .extract().path("access_token");
+    }
 
     @Test
     @Order(3)
@@ -31,7 +51,7 @@ class ActionResourceRestTest extends AccessTokenProvider {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(testAction)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .post("/")
                 .then()
@@ -45,7 +65,7 @@ class ActionResourceRestTest extends AccessTokenProvider {
     void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/getAll")
                 .then()
@@ -59,7 +79,7 @@ class ActionResourceRestTest extends AccessTokenProvider {
     void findById() {
         given()
                 .pathParam("id", "1")
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/{id}")
                 .then()
@@ -76,7 +96,7 @@ class ActionResourceRestTest extends AccessTokenProvider {
         Long id = 1L;
         given()
                 .pathParam("id", id)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .delete("/{id}")
                 .then()

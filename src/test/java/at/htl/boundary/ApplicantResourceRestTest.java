@@ -10,6 +10,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.*;
 
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
@@ -23,6 +25,25 @@ class ApplicantResourceRestTest extends AccessTokenProvider {
 
     @Inject
     ApplicantRepository applicantRepository;
+
+    private static String token = null;
+
+    @BeforeAll
+    public static void setup() {
+        token = given()
+                .contentType("application/x-www-form-urlencoded")
+                .formParams(Map.of(
+                        "username", "admin",
+                        "password", "admin",
+                        "grant_type", "password",
+                        "client_id", "quarkus-be-job",
+                        "client_secret", "yav88kWxD5uxS9VgUFaIqXQRvH4bAoXE",
+                        "scope", "openid"
+                ))
+                .post("https://auth.htl-leonding.ac.at/realms/kalinke/protocol/openid-connect/token")
+                .then().assertThat().statusCode(200)
+                .extract().path("access_token");
+    }
 
     @BeforeEach
     void setUp() {
@@ -45,8 +66,8 @@ class ApplicantResourceRestTest extends AccessTokenProvider {
     void create() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .auth().oauth2(getAccessToken("admin", "admin"))
                 .body(this.applicant)
+                .auth().oauth2(token)
                 .when()
                 .post("/create")
                 .prettyPeek()
@@ -62,7 +83,7 @@ class ApplicantResourceRestTest extends AccessTokenProvider {
     void getById() {
         given()
                 .pathParam("id", "1")
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/{id}")
                 .then()
@@ -78,7 +99,7 @@ class ApplicantResourceRestTest extends AccessTokenProvider {
     void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/getAll")
                 .then()
@@ -91,7 +112,7 @@ class ApplicantResourceRestTest extends AccessTokenProvider {
     void delete() {
         given()
                 .pathParam("id", 15L)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .delete("/{id}")
                 .then()
@@ -104,7 +125,7 @@ class ApplicantResourceRestTest extends AccessTokenProvider {
     void getAllByBranche() {
         given()
                 .pathParam("jobField", "Gastronomie")
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/getAllByBranche/{jobField}")
                 .peek()
@@ -125,7 +146,7 @@ class ApplicantResourceRestTest extends AccessTokenProvider {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(testApplicant)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .put("/update")
                 .then()
@@ -137,7 +158,7 @@ class ApplicantResourceRestTest extends AccessTokenProvider {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("id", testApplicant.getId())
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/{id}")
                 .then()

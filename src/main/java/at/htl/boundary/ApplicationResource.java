@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Path("application")
-@SecurityRequirement(name = "Keycloak")
 public class ApplicationResource {
 
     @Inject

@@ -11,6 +11,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.*;
 
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
@@ -23,11 +25,24 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
     CompanyResource companyResource;
 
 
+    private static String token = null;
 
-//    @BeforeEach
-//    void setUp() {
-//
-//    }
+    @BeforeAll
+    public static void setup() {
+        token = given()
+                .contentType("application/x-www-form-urlencoded")
+                .formParams(Map.of(
+                        "username", "admin",
+                        "password", "admin",
+                        "grant_type", "password",
+                        "client_id", "quarkus-be-job",
+                        "client_secret", "yav88kWxD5uxS9VgUFaIqXQRvH4bAoXE",
+                        "scope", "openid"
+                ))
+                .post("https://auth.htl-leonding.ac.at/realms/kalinke/protocol/openid-connect/token")
+                .then().assertThat().statusCode(200)
+                .extract().path("access_token");
+    }
 
     @Test
     @TestTransaction
@@ -50,7 +65,7 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(jobOffer1)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .post("/create")
                 .then()
@@ -70,7 +85,7 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
     public void getById() {
         given()
                 .pathParam("id", 13)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/{id}")
                 .then()
@@ -85,7 +100,7 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
     public void getById_partial() {
         given()
                 .pathParam("id", 13)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/partial/{id}")
                 .then()
@@ -102,7 +117,7 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
     public void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/getAll")
                 .then()
@@ -118,7 +133,7 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("partial", partial)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/getByStringPartial/{partial}")
                 .then()
@@ -137,7 +152,7 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("partial", partial)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/getByStringPartial/{partial}")
                 .then()
@@ -155,7 +170,7 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
 
         given()
                 .pathParam("partial", partial)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/getByStringPartial/{partial}")
                 .then()
@@ -169,7 +184,7 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("quantity", quantity)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("getRandomJobOffers/{quantity}")
                 .then()
@@ -184,7 +199,7 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("quantity", quantity)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("getRandomJobOffers/{quantity}")
                 .then()
@@ -202,7 +217,7 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("quantity", quantity)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("getRandomJobOffers/{quantity}")
                 .then()
@@ -223,7 +238,7 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .pathParam("category", category)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("getJobOfferByCategory/{category}")
                 .then()
@@ -241,7 +256,7 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
 
         given()
                 .pathParam("category", category)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("getJobOfferByCategory/{category}")
                 .then()
@@ -254,7 +269,7 @@ public class JobOfferResourceRestTest extends AccessTokenProvider {
     void delete() {
         given()
                 .pathParam("id", 10L)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .delete("/{id}")
                 .then()

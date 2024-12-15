@@ -1,11 +1,14 @@
 package at.htl.boundary;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import static io.restassured.RestAssured.given;
 
 import java.util.Map;
 
-public abstract class AccessTokenProvider {
+@ApplicationScoped
+public class AccessTokenProvider {
 
     @ConfigProperty(name = "quarkus.oidc.auth-server-url")
     String authServerUrl;

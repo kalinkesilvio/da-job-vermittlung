@@ -14,7 +14,6 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 import java.net.URI;
 
 @Path("/company")
-@SecurityRequirement(name = "Keycloak")
 public class CompanyResource {
 
     @Inject

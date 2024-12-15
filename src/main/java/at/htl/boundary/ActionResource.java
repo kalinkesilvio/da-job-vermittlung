@@ -17,7 +17,6 @@ import java.net.URI;
 
 //@Authenticated
 @Path("action")
-@SecurityRequirement(name = "Keycloak")
 public class ActionResource {
 
     @Inject

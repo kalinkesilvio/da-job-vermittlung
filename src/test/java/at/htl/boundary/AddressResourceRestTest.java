@@ -6,10 +6,10 @@ import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.junit.jupiter.api.*;
+
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
@@ -18,7 +18,26 @@ import static org.hamcrest.Matchers.nullValue;
 @QuarkusTest
 @TestHTTPEndpoint(AddressResource.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class AddressResourceRestTest extends AccessTokenProvider {
+class AddressResourceRestTest {
+
+    private static String token = null;
+
+    @BeforeAll
+    public static void setup() {
+        token = given()
+                .contentType("application/x-www-form-urlencoded")
+                .formParams(Map.of(
+                        "username", "admin",
+                        "password", "admin",
+                        "grant_type", "password",
+                        "client_id", "quarkus-be-job",
+                        "client_secret", "yav88kWxD5uxS9VgUFaIqXQRvH4bAoXE",
+                        "scope", "openid"
+                ))
+                .post("https://auth.htl-leonding.ac.at/realms/kalinke/protocol/openid-connect/token")
+                .then().assertThat().statusCode(200)
+                .extract().path("access_token");
+    }
 
     @Test
     @TestTransaction
@@ -37,7 +56,7 @@ class AddressResourceRestTest extends AccessTokenProvider {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(testAddress)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .post("/")
                 .then()
@@ -54,7 +73,7 @@ class AddressResourceRestTest extends AccessTokenProvider {
 
         given()
                 .pathParam("id", "1")
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/{id}")
                 .then()
@@ -71,7 +90,7 @@ class AddressResourceRestTest extends AccessTokenProvider {
 
         given()
                 .pathParam("id", "1")
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/getById_partial/{id}")
                 .then()
@@ -102,7 +121,7 @@ class AddressResourceRestTest extends AccessTokenProvider {
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .body(testUpdateAddress)
                 .when()
                 .put("/update")
@@ -114,7 +133,7 @@ class AddressResourceRestTest extends AccessTokenProvider {
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .pathParam("id", testUpdateAddress.getId())
                 .when()
                 .get("/{id}")
@@ -129,7 +148,7 @@ class AddressResourceRestTest extends AccessTokenProvider {
         Long id = 1L;
         given()
                 .pathParam("id", id)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .delete("/{id}")
                 .then()

@@ -13,6 +13,8 @@ import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
@@ -25,6 +27,25 @@ class CompanyResourceRestTest extends AccessTokenProvider {
 
     @Inject
     CompanyRepository companyRepository;
+
+    private static String token = null;
+
+    @BeforeAll
+    public static void setup() {
+        token = given()
+                .contentType("application/x-www-form-urlencoded")
+                .formParams(Map.of(
+                        "username", "admin",
+                        "password", "admin",
+                        "grant_type", "password",
+                        "client_id", "quarkus-be-job",
+                        "client_secret", "yav88kWxD5uxS9VgUFaIqXQRvH4bAoXE",
+                        "scope", "openid"
+                ))
+                .post("https://auth.htl-leonding.ac.at/realms/kalinke/protocol/openid-connect/token")
+                .then().assertThat().statusCode(200)
+                .extract().path("access_token");
+    }
 
     private Company company1;
 
@@ -41,7 +62,7 @@ class CompanyResourceRestTest extends AccessTokenProvider {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(this.company1)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .post("/create")
                 .then()
@@ -58,7 +79,7 @@ class CompanyResourceRestTest extends AccessTokenProvider {
     void getById() {
         given()
                 .pathParam("id", "3")
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/{id}")
                 .then()
@@ -73,7 +94,7 @@ class CompanyResourceRestTest extends AccessTokenProvider {
     void getAll() {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .get("/getAll")
                 .then()
@@ -91,7 +112,7 @@ class CompanyResourceRestTest extends AccessTokenProvider {
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(companyToUpdate)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .put("/update")
                 .then()
@@ -111,7 +132,7 @@ class CompanyResourceRestTest extends AccessTokenProvider {
 
         given()
                 .pathParam("id", removeId)
-                .auth().oauth2(getAccessToken("admin", "admin"))
+                .auth().oauth2(token)
                 .when()
                 .delete("/{id}")
                 .then()
